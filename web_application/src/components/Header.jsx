@@ -1,85 +1,87 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
+import MenuIcon from '@material-ui/icons/Menu';
 import SideMenue, {drawerWidth} from './SideMenue';
+import {Link, Route} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  hide: {
-    display: 'none',
-  },
-  appBar: {
-    background: '#F5F6F6',
-    borderBottomLeftRadius: '10px',
-    borderBottomRightRadius: '10px',
-    margin: '0px',
-    borderBottom: 'groove',
-    borderColor: 'black',
-    borderWidth:'1px',
-    color: 'black',
-
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth})`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
+    hide: {
+        display: 'none',
+    },
+    appBar: {
+        background: '#F5F6F6',
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px',
+        margin: '0px',
+        borderBottom: 'groove',
+        borderColor: 'black',
+        borderWidth: '1px',
+        color: 'black'
+    },
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth})`,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
 }));
 
 export default function Header(props) {
-  
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  
-  const handleDrawer = () => {
-    if(open) {
-      setOpen(false);
-    } else if(!open) {
-      setOpen(true);
-    }
-  };
 
-  return (
-    <div className={classes.root}>
-      <AppBar 
-      position="fixed"
-      className={clsx(classes.appBar, {
-        [classes.appBarShift]: open,
-      })}>
-        <Toolbar>
-              <IconButton 
-              edge="start" 
-              className={classes.menuButton} 
-              color="inherit" 
-              aria-label="menu"
-              onClick={handleDrawer}
-              className={clsx(classes.menuButton, open)}>
-              {/* <MenuIcon /> */}
-              <RoomServiceIcon/>
-          </IconButton> 
-          <Typography variant="h6" className={classes.title}>HOTEL SROTEL pjencio gfiastkofy</Typography>
-          <Button color="inherit">Login</Button> 
-        </Toolbar>
-      </AppBar>
-      <SideMenue open = {open}/>
-    </div>
-  );
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    const loginLink = props => <Link to="/login" {...props} />;
+
+    const handleDrawer = () => {
+        if (open) {
+            setOpen(false);
+        } else if (!open) {
+            setOpen(true);
+        }
+    };
+
+    return (
+        <div className={classes.root}>
+            <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShift]: open,
+                })}>
+                <Toolbar>
+                    <IconButton
+                        edge="start"
+                        className={classes.menuButton}
+                        color="inherit"
+                        aria-label="menu"
+                        onClick={handleDrawer}
+                        className={clsx(classes.menuButton, open)}>
+                        <Route path="/home" component={RoomServiceIcon}/>
+                        <Route path="/adminPanel" component={MenuIcon}/>
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>HOTEL SROTEL pjencio gfiastkofy</Typography>
+                    <Button component={loginLink} color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            <SideMenue open={open}/>
+        </div>
+    );
 }

@@ -1,41 +1,41 @@
 import React from 'react';
 import Header from './Header';
-import Carousel from './Carousel';
-import Home from './Home';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Footer from './Footer';
-import BookingPage from './BookingPage';
-// const App = ({ title }) =>
-//   <div>hehehe</div>;
+import {HashRouter as Router, Route} from "react-router-dom";
+import Login from './Login';
+import Home from "./Home";
+
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    paddingRight: '15%',
-    paddingLeft:'15%',
-    background: '#F5F6F6',
-    height: '100%',
-  }
+    paper: {
+        paddingRight: '15%',
+        paddingLeft: '15%',
+        background: '#F5F6F6',
+        height: '100%',
+        position: 'relative',
+        top: '60px'
+    }
 }));
 
 
-
-export default function App(props){
-  const classes = useStyles();
-
+export default function App(props) {
+    const classes = useStyles();
 
     return (
-      <React.Fragment>
-      <Header/>
-      <Paper className = {classes.paper}>
-        <Carousel/>
-        {/* <Home/> */}
-        <BookingPage/>
+        <React.Fragment>
+            <Router>
+                <Header/>
+                <Paper className={classes.paper}>
+                    <Route exact path="/home" component={Home}/>
+                    <Route exact path="/login" component={Login}/>
+                    {/*<Route component={Error404} />*/}
 
-      </Paper>
-      <Footer/>
-    {/* <PersistentDrawerLeft/> */}
-    </React.Fragment>
+                </Paper>
+                {/*<Footer/>*/}
+            </Router>
+        </React.Fragment>
     );
 }
 
