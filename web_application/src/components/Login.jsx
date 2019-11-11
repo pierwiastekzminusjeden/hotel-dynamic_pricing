@@ -14,18 +14,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {Link as link1, Redirect} from 'react-router-dom';
+import {login} from '../actions/auth';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -59,9 +51,31 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function SignInSide() {
-    const classes = useStyles();
+function SignInSide(props) {
 
+    const classes = useStyles();
+    const [username, setUsername] = React.useState();
+    const [password, setPassword] = React.useState();
+
+    const onSubmit = e => {
+        e.preventDefault();
+        props.login(username, password);
+    }
+
+    const onChangeUsername = e => {
+        console.log(e.target)
+         const { target: { name, value } } = e;
+         setUsername(value );
+    }
+    const onChangePassword = e => {
+                console.log(e.target)
+        const { target: { name, value } } = e;
+                setPassword(value);
+    }
+
+    if(props.isAuthenticated) {
+        return <Redirect to='/home'/>;
+    }
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline/>
@@ -80,11 +94,13 @@ export default function SignInSide() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            defaultValue = {username}
                             autoFocus
+                            onChange={onChangeUsername}
                         />
                         <TextField
                             variant="outlined"
@@ -96,6 +112,8 @@ export default function SignInSide() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            defaultValue = {password}
+                            onChange={onChangePassword}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
@@ -107,6 +125,7 @@ export default function SignInSide() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            onClick={onSubmit}
                         >
                             Sign In
                         </Button>
@@ -122,12 +141,20 @@ export default function SignInSide() {
                                 </Link>
                             </Grid>
                         </Grid>
-                        <Box mt={5}>
-                            <Copyright/>
-                        </Box>
                     </form>
                 </div>
             </Grid>
         </Grid>
     );
 }
+
+SignInSide.propTypes = {
+    login: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = state => ({
+   isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, {login} )(SignInSide);

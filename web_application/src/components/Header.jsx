@@ -11,6 +11,10 @@ import RoomServiceIcon from '@material-ui/icons/RoomService';
 import MenuIcon from '@material-ui/icons/Menu';
 import SideMenue, {drawerWidth} from './SideMenue';
 import {Link, Route} from 'react-router-dom';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,11 +49,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function Header(props) {
+function Header(props) {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const loginLink = props => <Link to="/login" {...props} />;
+    const logoutLink = props => <Link to="/logout" {...props} />;
 
     const handleDrawer = () => {
         if (open) {
@@ -57,6 +62,15 @@ export default function Header(props) {
         } else if (!open) {
             setOpen(true);
         }
+    };
+
+    const {isAuthenticated, user} = props.auth;
+    const authLinks = {
+
+    };
+
+    const guestLinks = {
+
     };
 
     return (
@@ -85,3 +99,13 @@ export default function Header(props) {
         </div>
     );
 }
+
+Header.propTypes = {
+    auth: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect()(Header)
