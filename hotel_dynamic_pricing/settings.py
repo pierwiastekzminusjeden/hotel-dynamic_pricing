@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'web_application',
+    'administration_system',
 ]
 
 MIDDLEWARE = [
@@ -127,5 +128,7 @@ CSRF_TRUSTED_ORIGINS = ['localhost:3000', 'localhost:8000']
 
 # Rest framework settings
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    ),
 }

@@ -1,6 +1,6 @@
 import React from 'react';
+
 import {makeStyles} from '@material-ui/core/styles';
-import DateFnsUtils from "@date-io/date-fns";
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -9,14 +9,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
 import {DatePicker, MuiPickersUtilsProvider,} from '@material-ui/pickers';
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
+import DateFnsUtils from "@date-io/date-fns";
 
 
 const useStyles = makeStyles(theme => ({
-
     pickers: {
         display: 'flex',
         textAlign: 'center',
@@ -64,10 +63,10 @@ const names = [
 
 export default function ReservationForm(props) {
     const classes = useStyles();
+
     const [selectedInDate, setSelectedInDate] = React.useState();
     const [selectedOutDate, setSelectedOutDate] = React.useState();
     const [selectedRoomType, setSelectedRoomType] = React.useState();
-
 
     const handleInDateChange = date => {
         setSelectedInDate(date);
@@ -145,7 +144,6 @@ export default function ReservationForm(props) {
                     <Button type="submit" className={classes.button}>Send request for available rooms</Button>
                 </form>
             </CardContent>
-
         </Card>
     );
 }

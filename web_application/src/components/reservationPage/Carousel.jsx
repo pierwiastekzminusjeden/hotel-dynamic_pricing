@@ -1,7 +1,8 @@
 import React from 'react';
+
 import Slider from 'react-animated-slider';
-import Paper from '@material-ui/core/Paper';
 import 'react-animated-slider/build/horizontal.css';
+import Paper from '@material-ui/core/Paper';
 import {makeStyles} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
@@ -26,7 +27,6 @@ const content = [
 ];
 
 const useStyle = makeStyles(theme => ({
-
     paper: {
         padding: '20px',
         marginBottom: '10px',

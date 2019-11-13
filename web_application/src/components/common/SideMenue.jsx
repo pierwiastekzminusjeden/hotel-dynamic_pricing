@@ -1,11 +1,15 @@
 import React from 'react';
+import {Route} from 'react-router-dom';
+
 import Drawer from '@material-ui/core/Drawer';
 import {makeStyles} from '@material-ui/core/styles';
-import ReservationForm from './ReservationForm';
-
 import Paper from '@material-ui/core/Paper';
-import AdminMenu from './AdminMenu';
-import {Route} from 'react-router-dom';
+import AdminMenu from '../adminPage/AdminMenu';
+
+import ReservationForm from '../reservationPage/ReservationForm';
+import Toolbar from "@material-ui/core/Toolbar";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
 
 export const drawerWidth = '500px';
 
@@ -66,8 +70,9 @@ const useStyles = makeStyles(theme => ({
 //   },
 }));
 
-export default function SideMenue(props) {
+function SideMenue(props) {
     const classes = useStyles();
+    const {isAuthenticated, user} = props.auth;
 
     return (
         <React.Fragment>
@@ -81,10 +86,21 @@ export default function SideMenue(props) {
                 }}
             >
                 <Paper className={classes.paper}>
-                    <Route path="/home" component={ReservationForm}/>
-                    <Route path="/adminPanel" component={AdminMenu}/>
+                     { isAuthenticated ? <AdminMenu/> : <ReservationForm/> }
                 </Paper>
             </Drawer>
         </React.Fragment>
     );
 }
+
+
+SideMenue.propTypes = {
+    auth: PropTypes.object.isRequired,
+}
+
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, {})(SideMenue)

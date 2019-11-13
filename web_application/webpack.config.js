@@ -32,6 +32,9 @@ module.exports = {
 		port: 3000,
 		hot: true
 	},
+	performance: {
+  		hints: process.env.NODE_ENV === 'production' ? "warning" : false
+	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new HtmlWebpackPlugin({

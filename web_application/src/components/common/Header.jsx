@@ -1,6 +1,10 @@
 import React from 'react';
-import clsx from 'clsx';
+import {Link, Route} from 'react-router-dom';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
+
+import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,11 +13,9 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 import MenuIcon from '@material-ui/icons/Menu';
-import SideMenue, {drawerWidth} from './SideMenue';
-import {Link, Route} from 'react-router-dom';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 
+import SideMenue, {drawerWidth} from './SideMenue';
+import UserMenu from "./UserMenu";
 
 
 const useStyles = makeStyles(theme => ({
@@ -53,8 +55,12 @@ function Header(props) {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const {isAuthenticated, user} = props.auth;
+
     const loginLink = props => <Link to="/login" {...props} />;
-    const logoutLink = props => <Link to="/logout" {...props} />;
+
+    const authLinks = <UserMenu/>;
+    const guestLinks =  <Button component={loginLink} color="inherit" >Login</Button>;
 
     const handleDrawer = () => {
         if (open) {
@@ -62,15 +68,6 @@ function Header(props) {
         } else if (!open) {
             setOpen(true);
         }
-    };
-
-    const {isAuthenticated, user} = props.auth;
-    const authLinks = {
-
-    };
-
-    const guestLinks = {
-
     };
 
     return (
@@ -92,7 +89,7 @@ function Header(props) {
                         <Route path="/adminPanel" component={MenuIcon}/>
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>HOTEL SROTEL pjencio gfiastkofy</Typography>
-                    <Button component={loginLink} color="inherit">Login</Button>
+                   { isAuthenticated ? authLinks : guestLinks }
                 </Toolbar>
             </AppBar>
             <SideMenue open={open}/>
@@ -101,11 +98,11 @@ function Header(props) {
 }
 
 Header.propTypes = {
-    auth: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect()(Header)
+export default connect(mapStateToProps, {})(Header)
