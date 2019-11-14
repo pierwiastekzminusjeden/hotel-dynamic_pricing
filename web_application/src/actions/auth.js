@@ -8,7 +8,7 @@ import {
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT_SUCCESS, CHANGE_PASSWORD_SUCCESS
+    LOGOUT_SUCCESS, CHANGE_PASSWORD_SUCCESS, REGISTER_USER_SUCCESS
 } from './types';
 
 // LOAD USER check token and load user
@@ -74,7 +74,26 @@ export const login = (username, password) => dispatch=> {
     });
 };
 
-//logout
+//registerAdmin
+export const registerAdmin = (username, email, password) => (dispatch, getState) => {
+
+    const config = getHeader(getState);
+
+    const body = JSON.stringify({username, email, password});
+    console.log(config);
+    axios.post('/api/auth/register-admin',body, config)
+        .then(res => {
+            dispatch({
+                type: REGISTER_USER_SUCCESS,
+                payload: res.data
+            });
+        }).catch(error => {
+        dispatch({
+            type: AUTH_ERROR,
+        });
+    });
+};
+
 // Logout
 export const logout = () => (dispatch, getState) => {
 
