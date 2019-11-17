@@ -42,4 +42,7 @@ module.exports = {
 		  	template: './templates/index.html',
 		})
 	  ],
-}
+    optimization: {
+        minimize: false
+    },
+};

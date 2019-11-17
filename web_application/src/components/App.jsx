@@ -14,16 +14,21 @@ import Home from "./reservationPage/Home";
 import Header from './common/Header';
 import AdminPanel from "./adminPage/AdminPanel";
 import ChangePasswordForm from "./common/ChangePasswordForm";
+import RegisterAdminForm from "./adminPage/RegisterAdminForm";
+import AddRoomForm from "./adminPage/AddRoomForm";
+import RoomList from "./adminPage/RoomList";
+import Rooms from "./adminPage/Rooms";
 
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        paddingRight: '15%',
-        paddingLeft: '15%',
+        padding: theme.spacing(10,20,10,20),
         background: '#F5F6F6',
-        height: '100%',
-        position: 'relative',
-        top: '60px'
+        position: 'absolute',
+        top: '0px',
+        right: '0px',
+        left: '0px',
+        bottom: '0px'
     }
 }));
 
@@ -40,10 +45,12 @@ export default function App(props) {
                 <Header/>
                 <Paper className={classes.paper}>
                     <Switch>
-                        <Route exact path="/login" component={Login}/>
                         <Route exact path="/home" component={Home}/>
-                        <PrivateRoute exact path="/adminPanel" component={AdminPanel}/>
-                        <PrivateRoute path="/changePassword" component={ChangePasswordForm}/>
+                        <Route exact path="/login" component={Login}/>
+                        <PrivateRoute path="/adminPanel/changePassword" component={ChangePasswordForm}/>
+                        <PrivateRoute path="/adminPanel" component={AdminPanel}/>
+                        <PrivateRoute path="/addAdmin" component={RegisterAdminForm}/>
+                        <Route exact path="/addRoom" component={Rooms}/>
                     </Switch>
                     {/*<Route component={Error404} />*/}
 

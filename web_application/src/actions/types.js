@@ -7,3 +7,9 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS= 'LOGIN_SUCCESS';
 export const CHANGE_PASSWORD_SUCCESS= 'LOGIN_SUCCESS';
 export const REGISTER_USER_SUCCESS= 'REGISTER_USER_SUCCESS';
+
+//Rooms
+
+export const GET_ROOMS = 'GET_ROOMS';
+export const DELETE_ROOM = 'DELETE_ROOM';
+export const ADD_ROOM_SUCCESS = 'ADD_ROOM_SUCCESS';

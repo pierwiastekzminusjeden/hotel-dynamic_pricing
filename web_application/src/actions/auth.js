@@ -125,4 +125,4 @@ export const getHeader = getState => {
         config.headers['Authorization'] = 'Token ' + token;
     }
     return config;
-}
+};

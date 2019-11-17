@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from enum import Enum
 
 
-class RoomTypes(Enum):
+class RoomTypes(str, Enum):
     SINGLE = 'Single room'
     STANDARD = 'Double standard room'
     TRIPLE = 'Triple room'
@@ -12,9 +12,8 @@ class RoomTypes(Enum):
 
 class Room(models.Model):
 
-    RoomId = models.AutoField(primary_key=True)
-    RoomNumber = models.IntegerField(default = 1)
-    RoomType = models.CharField(max_length = 1, choices = [(rt, rt.value) for rt in RoomTypes], default = RoomTypes.STANDARD)
-    BasePricePerNight = models.IntegerField(default=0, )
-    OptimalPricePerNightInCurrentWeek = models.IntegerField(default=0, null=True)
-    ImagePath = models.CharField(max_length=255, blank=True, null=True)
+    room_id = models.AutoField(primary_key=True)
+    room_number = models.IntegerField(default = 1)
+    room_type = models.CharField(max_length = 1, choices = [(rt, rt.value) for rt in RoomTypes], default = RoomTypes.STANDARD)
+    base_price_per_night = models.IntegerField(default=0, )
+    image_path = models.CharField(max_length=255, blank=True, null=True)

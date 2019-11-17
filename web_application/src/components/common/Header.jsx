@@ -87,6 +87,7 @@ function Header(props) {
                         className={clsx(classes.menuButton, open)}>
                         <Route path="/home" component={RoomServiceIcon}/>
                         <Route path="/adminPanel" component={MenuIcon}/>
+                        <Route path="/addAdmin" component={MenuIcon}/>
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>HOTEL SROTEL pjencio gfiastkofy</Typography>
                    { isAuthenticated ? authLinks : guestLinks }

@@ -56,6 +56,7 @@ function SignInSide(props) {
     const classes = useStyles();
     const [username, setUsername] = React.useState();
     const [password, setPassword] = React.useState();
+    const disabled = !(username && password);
 
     const onSubmit = e => {
         e.preventDefault();
@@ -76,23 +77,17 @@ function SignInSide(props) {
     }
     return (
         <Grid container component="main" className={classes.root}>
-            <CssBaseline/>
-            <Grid item xs={false} sm={4} md={7} className={classes.image}/>
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <Grid item component={Paper} square>
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon/>
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
                             variant="outlined"
                             margin="normal"
                             required
                             fullWidth
-                            id="username"
                             label="Username"
                             name="username"
                             autoComplete="username"
@@ -108,40 +103,25 @@ function SignInSide(props) {
                             name="password"
                             label="Password"
                             type="password"
-                            id="password"
                             autoComplete="current-password"
                             defaultValue={password}
                             onChange={onChangePassword}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary"/>}
-                            label="Remember me"
                         />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
+                            disabled = {disabled}
                             className={classes.submit}
                             onClick={onSubmit}
                         >
-                            Sign In
+                            Log In
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </form>
                 </div>
             </Grid>
+            <Grid item sm={5} md={5} className={classes.image}/>
         </Grid>
     );
 }

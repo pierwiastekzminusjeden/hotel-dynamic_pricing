@@ -51,7 +51,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     current_passwd = serializers.CharField(required=True)
 
 
-class RoomSerializer(serializers.HyperlinkedModelSerializer):
+class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ('RoomType', 'RoomNumber', 'BasePricePerNight', 'ImagePath')
+        fields = '__all__'

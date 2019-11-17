@@ -7,29 +7,19 @@ import {changePassword} from '../../actions/auth';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+import Paper from "@material-ui/core/Paper/Paper";
+import Typography from "@material-ui/core/Typography/Typography";
 
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        height: '100%',
-        marginTop: '70px',
-        marginBottom: '70px'
-    },
+
     image: {
         backgroundImage: 'url(https://source.unsplash.com/random)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
     },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
+
     avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
@@ -41,17 +31,32 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    paper: {
+        padding: theme.spacing(3, 1, 2, 1),
+        margin: theme.spacing(10,50,10,50),
+        position: 'relative'
+    },
+    text: {
+        marginTop: theme.spacing(1),
+        marginBottm: theme.spacing(1),
+        textAlign: 'center'
+    },
 }));
 
 function ChangePasswordForm(props) {
-//TODO add check new password is same 2 times
     const classes = useStyles();
     const [currentPassword, setCurrentPassword] = React.useState();
     const [newPassword, setNewPassword] = React.useState();
+    const [confirmPassword, setConfirmPassword] = React.useState();
+
+    const disabled = !(currentPassword && newPassword && newPassword === confirmPassword);
 
     const onSubmit = e => {
         e.preventDefault();
         props.changePassword(currentPassword, newPassword);
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
     };
 
     const onChangeCurrentPassword = e => {
@@ -62,58 +67,60 @@ function ChangePasswordForm(props) {
         const {target: {name, value}} = e;
         setNewPassword(value);
     };
+    const onChangeConfirmPassword = e => {
+        const {target: {name, value}} = e;
+        setConfirmPassword(value);
+    };
 
     return (
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="currentPassword"
-                            label="CurrentPassword"
-                            name="currentPassword"
-                            autoComplete="currentPassword"
-                            defaultValue={currentPassword}
-                            autoFocus
-                            onChange={onChangeCurrentPassword}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="newPassword"
-                            label="newPassword"
-                            type="newPassword"
-                            id="newPassword"
-                            autoComplete="current-password"
-                            defaultValue={newPassword}
-                            onChange={onChangeNewPassword}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            onClick={onSubmit}
-                        >
-                            ChangePassword
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </form>
+        <Paper className={classes.paper}>
+            <Typography variant = "h3" className={classes.text}> Change password</Typography>
+            <form className={classes.form} noValidate>
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="current password"
+                    type="password"
+                    defaultValue={currentPassword}
+                    onChange={onChangeCurrentPassword}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="newPassword"
+                    type="password"
+                    label="new password"
+                    defaultValue={newPassword}
+                    onChange={onChangeNewPassword}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="newPassword"
+                    type="password"
+                    label="new password"
+                    defaultValue={confirmPassword}
+                    onChange={onChangeConfirmPassword}
+                />
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    disabled={disabled}
+                    className={classes.submit}
+                    onClick={onSubmit}
+                >
+                    Change Password
+                </Button>
+            </form>
+        </Paper>
     );
 }
 

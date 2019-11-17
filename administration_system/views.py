@@ -81,22 +81,9 @@ class ChangePasswordView(UpdateAPIView):
         })
 
 
-#
-# class ChangePasswordView(generics.GenericAPIView):
-#
-#     def post(self, request, *args, **kwargs):
-#         username = None
-#         if request.user.is_authenticated():
-#             username = request.user.username
-#         u = User.objects.get(username__exact='john')
-#
-#         data = request.data
-
-
-
 #dostępne tylko dla autoryzowanych userów
-@method_decorator(staff_member_required, name='dispatch')
+# @method_decorator(staff_member_required, name='dispatch') #doesn't work fine
 class RoomViewSet(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated, ]  #it works
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-
