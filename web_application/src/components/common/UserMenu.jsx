@@ -65,7 +65,7 @@ function UserMenu(props) {
         prevOpen.current = open;
     }, [open]);
     const logoutLink = props.logout;
-    const changePassword = props => <Link to="/adminPanel/changePassword" {...props} />;
+    const changePassword = props => <Link to="/changePassword" {...props} />;
     const adminPanel = props => <Link to="/adminPanel" {...props} />;
     const {isAuthenticated, user} = props.auth;
 

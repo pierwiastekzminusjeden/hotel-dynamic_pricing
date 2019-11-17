@@ -78,6 +78,7 @@ function Header(props) {
                     [classes.appBarShift]: open,
                 })}>
                 <Toolbar>
+                {isAuthenticat
                     <IconButton
                         edge="start"
                         className={classes.menuButton}

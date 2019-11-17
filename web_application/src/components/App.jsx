@@ -45,17 +45,14 @@ export default function App(props) {
                 <Header/>
                 <Paper className={classes.paper}>
                     <Switch>
-                        <Route exact path="/home" component={Home}/>
+                        <Route exact path="/" component={Home}/>
                         <Route exact path="/login" component={Login}/>
-                        <PrivateRoute path="/adminPanel/changePassword" component={ChangePasswordForm}/>
+                        <PrivateRoute path="/changePassword" component={ChangePasswordForm}/>
                         <PrivateRoute path="/adminPanel" component={AdminPanel}/>
                         <PrivateRoute path="/addAdmin" component={RegisterAdminForm}/>
                         <Route exact path="/addRoom" component={Rooms}/>
                     </Switch>
-                    {/*<Route component={Error404} />*/}
-
                 </Paper>
-                {/*<Footer/>*/}
             </Router>
         </Provider>
     );

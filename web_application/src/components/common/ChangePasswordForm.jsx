@@ -13,17 +13,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 
 const useStyles = makeStyles(theme => ({
 
-    image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    },
 
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
@@ -54,9 +44,11 @@ function ChangePasswordForm(props) {
     const onSubmit = e => {
         e.preventDefault();
         props.changePassword(currentPassword, newPassword);
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
+        setCurrentPassword(null);
+        setNewPassword(null);
+        setConfirmPassword(null);
+        e.target.value = null;
+        
     };
 
     const onChangeCurrentPassword = e => {
@@ -83,7 +75,8 @@ function ChangePasswordForm(props) {
                     fullWidth
                     name="current password"
                     type="password"
-                    defaultValue={currentPassword}
+                    label=" password"
+                    value = {currentPassword}
                     onChange={onChangeCurrentPassword}
                 />
                 <TextField
@@ -94,7 +87,7 @@ function ChangePasswordForm(props) {
                     name="newPassword"
                     type="password"
                     label="new password"
-                    defaultValue={newPassword}
+                    value={newPassword}
                     onChange={onChangeNewPassword}
                 />
                 <TextField
@@ -105,7 +98,7 @@ function ChangePasswordForm(props) {
                     name="newPassword"
                     type="password"
                     label="new password"
-                    defaultValue={confirmPassword}
+                    value={confirmPassword}
                     onChange={onChangeConfirmPassword}
                 />
                 <Button
