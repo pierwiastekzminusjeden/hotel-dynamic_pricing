@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'knox',
+    'corsheaders', #for development
+    'django_filters',
     'web_application',
     'administration_system',
 ]
@@ -51,6 +53,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware' #for development
+
+
 ]
 
 ROOT_URLCONF = 'hotel_dynamic_pricing.urls'
@@ -126,9 +131,18 @@ STATIC_URL = '/static/'
 
 CSRF_TRUSTED_ORIGINS = ['localhost:3000', 'localhost:8000']
 
+CSRF_COOKIE_NAME = "csrftoken"
+
 # Rest framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'knox.auth.TokenAuthentication',
     ),
 }
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'http://localhost:8000',
+)

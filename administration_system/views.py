@@ -1,6 +1,8 @@
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.generics import UpdateAPIView
+from rest_framework.generics import UpdateAPIView, RetrieveUpdateAPIView, ListCreateAPIView, \
+    RetrieveUpdateDestroyAPIView, GenericAPIView, RetrieveAPIView
+from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from knox.models import AuthToken
 from django.contrib.admin.views.decorators import staff_member_required
@@ -9,13 +11,13 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import RegistrationUserSerializer, UserSerializer, LoginUserSerializer, RegistrationAdminSerializer, \
-    ChangePasswordSerializer
+    ChangePasswordSerializer, ReservationSerializer
 
-from .models import Room
+from .models import Room, Reservation
 from .serializers import RoomSerializer
 
 
-class RegistrationView(generics.GenericAPIView):
+class RegistrationView(GenericAPIView):
     serializer_class = RegistrationUserSerializer
 
     def post(self, request, *args, **kwargs):
@@ -26,6 +28,7 @@ class RegistrationView(generics.GenericAPIView):
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
+
 
 @method_decorator(staff_member_required, name='dispatch')
 class RegistrationAdminView(generics.GenericAPIView):
@@ -41,7 +44,7 @@ class RegistrationAdminView(generics.GenericAPIView):
         })
 
 
-class LoginView(generics.GenericAPIView):
+class LoginView(GenericAPIView):
     serializer_class = LoginUserSerializer
 
     def post(self, request, *args, **kwargs):
@@ -54,7 +57,7 @@ class LoginView(generics.GenericAPIView):
         })
 
 
-class UserView(generics.RetrieveAPIView):
+class UserView(RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, ]
     serializer_class = UserSerializer
 
@@ -62,7 +65,7 @@ class UserView(generics.RetrieveAPIView):
         return self.request.user
 
 
-class ChangePasswordView(UpdateAPIView):
+class ChangePasswordView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = ChangePasswordSerializer
     model = User
@@ -83,7 +86,25 @@ class ChangePasswordView(UpdateAPIView):
 
 #dostępne tylko dla autoryzowanych userów
 # @method_decorator(staff_member_required, name='dispatch') #doesn't work fine
-class RoomViewSet(generics.ListCreateAPIView):
+class RoomList(ListCreateAPIView):
     permission_classes = [IsAuthenticated, ]  #it works
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+
+
+class RoomDetail(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, ]  #it works
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+
+
+class ReservationList(ListCreateAPIView):
+    # permission_classes = [IsAuthenticated, ]  #it works
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+
+
+class ReservationDetail(RetrieveUpdateDestroyAPIView):
+    # permission_classes = [IsAuthenticated, ]  #it works
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer

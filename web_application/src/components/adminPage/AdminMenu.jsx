@@ -23,21 +23,26 @@ const useStyles = makeStyles(theme => ({
 
 export default function AdminMenu(props) {
     const classes = useStyles();
-    const addAdminLink = props => <Link to="/addAdmin" {...props} />;
-    const addRoomLink = props => <Link to="/addRoom" {...props} />;
+    const adminsLink = props => <Link to="/admins" {...props} />;
+    const roomsLink = props => <Link to="/rooms" {...props} />;
+    const reservationsLink = props => <Link to="/reservations" {...props} />;
 
     return (
         <Card className={classes.card}>
             <div>
                 <div className={classes.toolbar}/>
                 <Divider/>
-                    <ListItem button key={'Add new admin'} component = {addAdminLink}>
+                    <ListItem button key={'Add new admin'} component = {adminsLink}>
                         <ListItemIcon><PersonAddIcon/></ListItemIcon>
                         <ListItemText primary={'Add new admin'}/>
                     </ListItem>
-                    <ListItem button key={'Add new room'} component = {addRoomLink}>
+                    <ListItem button key={'Rooms'} component = {roomsLink}>
                         <ListItemIcon><HotelIcon/></ListItemIcon>
-                        <ListItemText primary={'Add new room'}/>
+                        <ListItemText primary={'Rooms'}/>
+                    </ListItem>
+                    <ListItem button key={'Reservations'} component = {reservationsLink}>
+                        <ListItemIcon><HotelIcon/></ListItemIcon>
+                        <ListItemText primary={'Reservations'}/>
                     </ListItem>
                 <List>
                 </List>

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from .models import Room
+from .models import Room, Reservation
 
 
 #Registration serializers
@@ -29,6 +29,7 @@ class RegistrationAdminSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -45,8 +46,8 @@ class LoginUserSerializer(serializers.Serializer):
             return user
         raise serializers.ValidationError("Incorrect credentials.")
 
-class ChangePasswordSerializer(serializers.Serializer):
 
+class ChangePasswordSerializer(serializers.Serializer):
     new_passwd = serializers.CharField(required=True)
     current_passwd = serializers.CharField(required=True)
 
@@ -54,4 +55,10 @@ class ChangePasswordSerializer(serializers.Serializer):
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
+        fields = '__all__'
+
+
+class ReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
         fields = '__all__'

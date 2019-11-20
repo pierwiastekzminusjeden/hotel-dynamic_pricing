@@ -33,8 +33,6 @@ const useStyles = makeStyles(theme => ({
     },
     appBar: {
         background: '#F5F6F6',
-        borderBottomLeftRadius: '10px',
-        borderBottomRightRadius: '10px',
         margin: '0px',
         borderBottom: 'groove',
         borderColor: 'black',
@@ -78,7 +76,7 @@ function Header(props) {
                     [classes.appBarShift]: open,
                 })}>
                 <Toolbar>
-                {isAuthenticat
+                {/* if isauthenticated then show admin button, if home then show reservation, else disable button */}
                     <IconButton
                         edge="start"
                         className={classes.menuButton}
@@ -86,9 +84,7 @@ function Header(props) {
                         aria-label="menu"
                         onClick={handleDrawer}
                         className={clsx(classes.menuButton, open)}>
-                        <Route path="/home" component={RoomServiceIcon}/>
-                        <Route path="/adminPanel" component={MenuIcon}/>
-                        <Route path="/addAdmin" component={MenuIcon}/>
+\                        {isAuthenticated ? <MenuIcon/>:  <Route exact path="/" component={RoomServiceIcon}/>}
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>HOTEL SROTEL pjencio gfiastkofy</Typography>
                    { isAuthenticated ? authLinks : guestLinks }

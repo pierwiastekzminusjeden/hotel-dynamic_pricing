@@ -18,7 +18,7 @@ export const loadUser = () => (dispatch, getState) => {
     const config = getHeader(getState);
 
 
-    axios.get('/api/auth/user', config)
+    axios.get('http://localhost:8000/api/auth/user', config)
         .then(res => {
             dispatch({
                 type: USER_LOADED,
@@ -38,7 +38,7 @@ export const changePassword = (current_passwd, new_passwd) => (dispatch, getStat
 
     const body = JSON.stringify({current_passwd, new_passwd});
     console.log(config);
-    axios.post('/api/auth/change-password',body, config)
+    axios.post('http://localhost:8000/api/auth/change-password',body, config)
         .then(res => {
             dispatch({
                 type: CHANGE_PASSWORD_SUCCESS,
@@ -61,7 +61,7 @@ export const login = (username, password) => dispatch=> {
     //request
     const body = JSON.stringify({username, password});
 
-    axios.post('/api/auth/login',body, config)
+    axios.post('http://localhost:8000/api/auth/login',body, config)
         .then(res => {
             dispatch({
                 type: LOGIN_SUCCESS,
@@ -81,7 +81,7 @@ export const registerAdmin = (username, email, password) => (dispatch, getState)
 
     const body = JSON.stringify({username, email, password});
     console.log(config);
-    axios.post('/api/auth/register-admin',body, config)
+    axios.post('http://localhost:8000/api/auth/register-admin',body, config)
         .then(res => {
             dispatch({
                 type: REGISTER_USER_SUCCESS,
@@ -99,7 +99,7 @@ export const logout = () => (dispatch, getState) => {
 
     const config = getHeader(getState);
 
-    axios.get('/api/auth/logout', null,  config)
+    axios.get('http://localhost:8000/api/auth/logout', null,  config)
         .then(res => {
             dispatch({
                 type: LOGOUT_SUCCESS,

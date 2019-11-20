@@ -13,7 +13,7 @@ import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Card from "@material-ui/core/Card/Card";
-import {addRoom} from "../../actions/rooms";
+import {addReservation} from "../../actions/reservations";
 
 
 const useStyles = makeStyles(theme => ({
@@ -42,96 +42,89 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const roomTypes = [
-    'Single room',
-    'Double standard room',
-    'Triple room',
-    'Double room with kings bed'
-];
-
-function AddRoomForm(props) {
+function AddReservationForm(props) {
 
     const classes = useStyles();
-    const [room_number, setRoom_number] = React.useState();
-    const [room_type, setRoom_type] = React.useState();
-    const [base_price_per_night, setBase_price_per_night] = React.useState();
-    const [image_path, setImage_path] = React.useState();
-    const disabled = !(room_number && room_type && base_price_per_night);
+
+    const [room_id, setRoom] = React.useState();
+    const [from_date, setFromDate] = React.useState();
+    const [to_date, setToDate] = React.useState();
+    const [price, setPrice] = React.useState();
+    const disabled = !(room_id && from_date && to_date && price);
+
 
     const onSubmit = e => {
         e.preventDefault();
-        props.addRoom(room_number, room_type, base_price_per_night, image_path);
+        props.addReservation(room_id, from_date, to_date, price);
+    };
+    const onChangeRoom = e => {
+        const {target: {name, value}} = e;
+        setRoom(value);
+    };
+    const onChangeFromDate = e => {
+        const {target: {name, value}} = e;
+        setFromDate(value);
+    };
+    const onChangeToDate = e => {
+        const {target: {name, value}} = e;
+        setToDate(value);
     };
 
-    const onChangeRoomNumber = e => {
+    const onChangePrice = e => {
         const {target: {name, value}} = e;
-        setRoom_number(value);
+        setPrice(value);
     };
-    const onChangeRoomType = e => {
-        const {target: {name, value}} = e;
-        setRoom_type(value);
-    };
-
-    const onChangeBasePrice = e => {
-        const {target: {name, value}} = e;
-        setBase_price_per_night(value);
-    };
-    const onChangeImagePath = e => {
-        const {target: {name, value}} = e;
-        setImage_path(value);
-    };
+  
 
     return (
         <Paper className={classes.paper}>
-            <Typography variant="h3" className={classes.text}> Add new room</Typography>
+            <Typography variant="h3" className={classes.text}>Add new reservation</Typography>
             <form className={classes.form}>
                 <TextField
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    id="roomNumber"
-                    label="room number"
+                    id="room_id"
+                    label="room id"
                     type="number"
-                    defaultValue={room_number}
+                    defaultValue={room_id}
                     autoFocus
-                    onChange={onChangeRoomNumber}
+                    onChange={onChangeRoom}
                 />
-                <FormControl className={classes.form}>
-                    <Select
-                        label = "room type"
-                        defaultValue={roomTypes[1]}
-                        onChange={onChangeRoomType}
-                        input={<Input/>}
-                    >
-                        {roomTypes.map(name => (
-                            <MenuItem key={name} value={name}>
-                                {name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
                 <TextField
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    name="basePrice"
-                    label="base price"
+                    id="price"
+                    label="price"
                     type="number"
-                    defaultValue={base_price_per_night}
-                    onChange={onChangeBasePrice}
+                    defaultValue={price}
+                    autoFocus
+                    onChange={onChangePrice}
                 />
                 <TextField
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    name="imagePath"
-                    label="image path"
-                    type="path"
-                    defaultValue={image_path}
-                    onChange={onChangeImagePath}
+                    name="from_date"
+                    label="from date"
+                    type="date"
+                    defaultValue={from_date}
+                    onChange={onChangeFromDate}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="to_date"
+                    label="to date"
+                    type="date"
+                    defaultValue={to_date}
+                    onChange={onChangeToDate}
                 />
                 <Button
                     type="submit"
@@ -149,13 +142,13 @@ function AddRoomForm(props) {
     );
 }
 
-AddRoomForm.propTypes = {
+AddReservationForm.propTypes = {
     auth: PropTypes.object.isRequired,
-    addRoom: PropTypes.func.isRequired,
+    addReservation: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, {addRoom})(AddRoomForm);
+export default connect(mapStateToProps, {addReservation})(AddReservationForm);
