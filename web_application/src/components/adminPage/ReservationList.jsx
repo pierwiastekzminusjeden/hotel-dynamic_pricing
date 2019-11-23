@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {getRooms, deleteRoom} from "../../actions/rooms";
+import {getReservation, deleteReservation} from "../../actions/reservations";
 import store from "../../store";
 import {loadUser} from "../../actions/auth";
 
@@ -24,38 +24,42 @@ const useStyles = makeStyles({
     },
 });
 
-function RoomList(props) {
+function ReservationList(props) {
     const classes = useStyles();
     useEffect(() => {
-        props.getRooms();
+        props.getReservations();
         console.log(props.rooms)
     }, []);
 
     return(
         <React.Fragment>
-            <h2>Rooms</h2>
+            <h2>Reservations</h2>
             <Paper className={classes.root}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Room id</TableCell>
-                            <TableCell align="right">Room number</TableCell>
-                            <TableCell align="right">Room Type</TableCell>
-                            <TableCell align="right">base price per night</TableCell>
-                            <TableCell align="right">image path</TableCell>
+                            <TableCell>reservation_id</TableCell>
+                            <TableCell align="right">room</TableCell>
+                            <TableCell align="right">client</TableCell>
+                            <TableCell align="right">reservation date</TableCell>
+                            <TableCell align="right">from</TableCell>
+                            <TableCell align="right">to</TableCell>
+                            <TableCell align="right">price</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.rooms.map(room => (
-                            <TableRow key={room.name}>
+                        {props.reservation.map(reservation => (
+                            <TableRow key={reservation.name}>
                                 <TableCell component="th" scope="row">
-                                    {room.room_id}
+                                    {reservation.reservation_id}
                                 </TableCell>
-                                <TableCell align="right">{room.room_number}</TableCell>
-                                <TableCell align="right">{room.room_type}</TableCell>
-                                <TableCell align="right">{room.base_price_per_night}</TableCell>
-                                <TableCell align="right">{room.image_path}</TableCell>
-                                <TableCell align="right"><Button onClick ={props.deleteRoom.bind(this, room.room_id)}>Delete</Button></TableCell>
+                                <TableCell align="right">{reservationoom.room}</TableCell>
+                                <TableCell align="right">{reservation.client}</TableCell>
+                                <TableCell align="right">{reservation.reservation_date}</TableCell>
+                                <TableCell align="right">{reservation.from_date}</TableCell>
+                                <TableCell align="right">{reservation.to_date}</TableCell>
+                                <TableCell align="right">{reservation.price}</TableCell>
+                                <TableCell align="right"><Button onClick ={props.deleteReservation.bind(this, room.reservation_id)}>Delete</Button></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -68,7 +72,7 @@ function RoomList(props) {
 
 RoomList.propTypes = {
     auth: PropTypes.object.isRequired,
-    rooms: PropTypes.array.isRequired,
+    reservations: PropTypes.array.isRequired,
     getRooms: PropTypes.func.isRequired,
     deleteRoom: PropTypes.func.isRequired
 };
@@ -78,4 +82,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, {getRooms, deleteRoom})(RoomList);
+export default connect(mapStateToProps, {getReservations})(ReservationList);

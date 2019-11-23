@@ -1,8 +1,6 @@
-from rest_framework import viewsets, permissions, generics, status
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.generics import UpdateAPIView, RetrieveUpdateAPIView, ListCreateAPIView, \
-    RetrieveUpdateDestroyAPIView, GenericAPIView, RetrieveAPIView
-from rest_framework.mixins import ListModelMixin
+from rest_framework import  permissions, generics, status
+from rest_framework.generics import RetrieveUpdateAPIView, ListCreateAPIView, \
+    RetrieveUpdateDestroyAPIView, GenericAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.response import Response
 from knox.models import AuthToken
 from django.contrib.admin.views.decorators import staff_member_required
@@ -83,17 +81,37 @@ class ChangePasswordView(RetrieveUpdateAPIView):
             "token": AuthToken.objects.create(self.object)[1]
         })
 
+#test it
+class AvailableRoomsView(ListAPIView):
+    serializer_class = RoomSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        queryset_list = Room.objects.all()
+        room_type = self.request.GET.get("q")
+        from_date = self.request.GET.get("q2")
+        to_date = self.request.GET.get("q3")
+        if room_type:
+            queryset_list = self.filter_reservations(room_type, "2019-11-20", "2019-12-20")
+        return queryset_list
+
+    def filter_reservations(self, room_type, date_in, date_to):
+        valid_rooms = Room.objects.filter(room_type__contains=room_type)
+        print(valid_rooms)
+        reserved_rooms_id = Reservation.objects.filter(room__in=valid_rooms).filter(to_date__gt=date_in).filter(from_date__lte=date_to).values('room')
+        reserved_rooms = Room.objects.filter(room_id__in=reserved_rooms_id)
+        return valid_rooms.difference(reserved_rooms).distinct()
+
 
 #dostępne tylko dla autoryzowanych userów
 # @method_decorator(staff_member_required, name='dispatch') #doesn't work fine
 class RoomList(ListCreateAPIView):
-    permission_classes = [IsAuthenticated, ]  #it works
+    # permission_classes = [IsAuthenticated, ]  #it works
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
 
 class RoomDetail(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated, ]  #it works
+    # permission_classes = [IsAuthenticated, ]  #it works
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 

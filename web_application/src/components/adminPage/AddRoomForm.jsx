@@ -43,10 +43,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const roomTypes = [
-    'Single room',
-    'Double standard room',
-    'Triple room',
-    'Double room with kings bed'
+    {name: 'Single room', value: 'SINGLE'},
+    {name: 'Double standard room', value: 'STANDARD'},
+    {name: 'Triple room', value: 'TRIPLE'},
+    {name: 'Double room with kings bed', value: 'DELUX'}
 ];
 
 function AddRoomForm(props) {
@@ -100,13 +100,13 @@ function AddRoomForm(props) {
                 <FormControl className={classes.form}>
                     <Select
                         label = "room type"
-                        defaultValue={roomTypes[1]}
+                        defaultValue={roomTypes[1].value}
                         onChange={onChangeRoomType}
                         input={<Input/>}
                     >
-                        {roomTypes.map(name => (
-                            <MenuItem key={name} value={name}>
-                                {name}
+                        {roomTypes.map(obj => (
+                            <MenuItem key={obj.value} value={obj.value}>
+                                {obj.name}
                             </MenuItem>
                         ))}
                     </Select>
