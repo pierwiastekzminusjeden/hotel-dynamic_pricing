@@ -16,8 +16,9 @@ Including another URLconf
 from django.urls import path, include
 from knox.views import LogoutView
 
-from administration_system.views import RegistrationView, LoginView, UserView, RoomList, RegistrationAdminView, \
-    ChangePasswordView, ReservationList, ReservationDetail, RoomDetail, AvailableRoomsView
+from administration_system.views import RegistrationView, LoginView, UserView, RoomView, RegistrationAdminView, \
+    ChangePasswordView, ReservationList, ReservationDetail, RoomDetail, AvailableRoomWithPriceView, \
+    PricingForDateRangeView
 
 urlpatterns = [
     # path('api/auth', include('knox.urls')),
@@ -28,10 +29,11 @@ urlpatterns = [
     path('auth/change-password', ChangePasswordView.as_view()),
     path('auth/logout', LogoutView.as_view(), name='knox_logout'),
 
-    path('rooms/', RoomList.as_view()),
+    path('rooms/', RoomView.as_view()),
     path('room/<int:pk>', RoomDetail.as_view()),
     path('reservations', ReservationList.as_view()),
     path('reservation/<int:pk>', ReservationDetail.as_view()),
-    path('free-rooms/', AvailableRoomsView.as_view()),
+    path('get-prices/', PricingForDateRangeView.as_view()),
+    path('available-room/', AvailableRoomWithPriceView.as_view()),
 
 ]

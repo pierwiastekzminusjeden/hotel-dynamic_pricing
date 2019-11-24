@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -9,18 +9,29 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {DatePicker, MuiPickersUtilsProvider,} from '@material-ui/pickers';
+import { DatePicker, MuiPickersUtilsProvider, } from '@material-ui/pickers';
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import DateFnsUtils from "@date-io/date-fns";
+// import DateFnsUtils from "@date-io/date-fns";
+import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux';
+import {requestAvailableRooms} from "../../actions/availableRooms";
 
+
+const roomTypes = [
+    {name: 'Single room', value: 'SINGLE'},
+    {name: 'Double standard room', value: 'STANDARD'},
+    {name: 'Triple room', value: 'TRIPLE'},
+    {name: 'Double room with kings bed', value: 'DELUX'}
+];
 
 const useStyles = makeStyles(theme => ({
     pickers: {
         display: 'flex',
         textAlign: 'center',
         margin: '5px',
-        width: '20px'
+        // width: '20px'
     },
 
     formControl: {
@@ -47,43 +58,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
-
-
-export default function ReservationForm(props) {
+function ReservationForm(props) {
     const classes = useStyles();
 
     const [selectedInDate, setSelectedInDate] = React.useState();
     const [selectedOutDate, setSelectedOutDate] = React.useState();
     const [selectedRoomType, setSelectedRoomType] = React.useState();
 
-    const handleInDateChange = date => {
-        setSelectedInDate(date);
+    const onChangeFromDate = type => {
+        setSelectedInDate(type.target.value);
     };
 
-    const handleOutDateChange = date => {
-        setSelectedOutDate(date);
+    const onChangeToDate = type => {
+        setSelectedOutDate(type.target.value);
     };
 
-    const handleRoomTypeChange = type => {
+    const onChangeRoomType = type => {
         setSelectedRoomType(type.target.value);
     };
-    const handleSubmit = event => {
+    const handleSubmit = e => {
         console.log(selectedInDate);
         console.log(selectedOutDate);
         console.log(selectedRoomType);
-        event.preventDefault();
+        e.preventDefault();
+        props.requestAvailableRooms(selectedRoomType, selectedInDate, selectedOutDate);
+
     };
 
     return (
@@ -93,57 +92,69 @@ export default function ReservationForm(props) {
             />
             <CardContent>
                 <form onSubmit={handleSubmit}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        {/* <Grid container justify="space-around" direction="row"> */}
                         <Card className={classes.keyboardPicker}>
                             <Typography variant="h6">Date in</Typography>
-                            <DatePicker
-                                disableToolbar="true"
-                                disablePast="true"
-                                openTo="date"
-                                variant="static"
-                                orientation="landscape"
-                                format="MM/dd/yyyy"
-                                value={selectedInDate}
-                                onChange={handleInDateChange}
+                            <TextField
+                                // disableToolbar="true"
+                                // disablePast="true"
+                                // openTo="date"
+                                type="date"
+                                // variant="static"
+                                // orientation="landscape"
+                                format = "MM-DD-YYYY"
+                                // value={selectedInDate}
+                                onChange={onChangeFromDate}
                                 className={classes.pickers}
                             />
                         </Card>
                         <Card className={classes.keyboardPicker}>
                             <Typography variant="h6">Date out</Typography>
-                            <DatePicker
-                                disableToolbar="true"
-                                disablePast="true"
-                                openTo="date"
-                                variant="static"
-                                orientation="landscape"
-                                format="MM/dd/yyyy"
-                                value={selectedOutDate}
-                                onChange={handleOutDateChange}
+                            <TextField
+                                // disableToolbar="true"
+                                // disablePast="true"
+                                // openTo="date"
+                                // variant="static"
+                                // orientation="landscape"
+                                type="date"
+                                format = "MM-DD-YYYY"
+                                // value={selectedOutDate}
+                                onChange={onChangeToDate}
                                 className={classes.pickers}
                             />
                         </Card>
                         <Card className={classes.keyboardPicker}>
                             <Typography variant="h6">Room Type</Typography>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel id="demo-mutiple-name-label">Name</InputLabel>
+                            <FormControl className={classes.form}>
                                 <Select
-                                    value={selectedRoomType}
-                                    onChange={handleRoomTypeChange}
-                                    input={<Input/>}
+                                    label="room type"
+                                    defaultValue={roomTypes[1].value}
+                                    onChange={onChangeRoomType}
+                                    input={<Input />}
                                 >
-                                    {names.map(name => (
-                                        <MenuItem key={name} value={name}>
-                                            {name}
+                                    {roomTypes.map(obj => (
+                                        <MenuItem key={obj.value} value={obj.value}>
+                                            {obj.name}
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
                         </Card>
-                    </MuiPickersUtilsProvider>
+                    {/* </MuiPickersUtilsProvider> */}
                     <Button type="submit" className={classes.button}>Send request for available rooms</Button>
                 </form>
             </CardContent>
         </Card>
     );
 }
+
+
+ReservationForm.propTypes = {
+    // auth: PropTypes.object.isRequired,
+    requestAvailableRooms: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+    // auth: state.auth
+});
+
+export default connect(mapStateToProps, {requestAvailableRooms})(ReservationForm);
