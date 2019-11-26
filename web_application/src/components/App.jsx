@@ -35,7 +35,6 @@ export default function App(props) {
                         <PrivateRoute path="/admins" component={RegisterAdminForm}/>
                         <Route exact path="/rooms" component={Rooms}/>
                         <Route exact path="/reservations" component={Reservations}/>
-
                     </Switch>
             </Router>
         </Provider>

@@ -5,6 +5,7 @@ import {makeStyles} from '@material-ui/core/styles';
 
 import Carousel from "./Carousel";
 import BookingPage from "./BookingPage";
+import ReservationForm from "./ReservationForm";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -24,7 +25,7 @@ export default function Home() {
     return (
         <Paper className={classes.paper}>
             <Carousel/>
-            <BookingPage/>
+            <ReservationForm/>
         </Paper>
     );
 }

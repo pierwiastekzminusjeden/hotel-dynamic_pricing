@@ -13,7 +13,6 @@ import Typography from "@material-ui/core/Typography/Typography";
 
 const useStyles = makeStyles(theme => ({
 
-
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
@@ -47,7 +46,7 @@ function ChangePasswordForm(props) {
         setCurrentPassword(null);
         setNewPassword(null);
         setConfirmPassword(null);
-        e.target.value = null;
+        e.target.value = null; //disable posibility to click 2 times submit 
         
     };
 

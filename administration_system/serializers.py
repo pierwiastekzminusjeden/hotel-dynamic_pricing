@@ -76,8 +76,6 @@ class PricingSerializer(serializers.ModelSerializer):
         # fields = ('date', 'price', 'room')
 
 
-
-
 class AvailableRoomWithPriceSerializer(serializers.Serializer):
     room_type = serializers.ChoiceField(required=True, choices=ROOM_TYPES)
     from_date = serializers.DateField(required=True)

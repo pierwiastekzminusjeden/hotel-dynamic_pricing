@@ -7,7 +7,6 @@ import {getHeader} from "./auth";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
-//get rooms
 export const getReservations = () => (dispatch, getState) => {
     const config = getHeader(getState);
 
@@ -20,24 +19,16 @@ export const getReservations = () => (dispatch, getState) => {
         }).catch(err => console.log(err));
 };
 
-// export const deleteRoom = (id) => (dispatch, getState) => {
-//     console.log("hehe");
-//     const config = getHeader(getState);
 
-//     axios.delete(`http://localhost:8000/api/rooms/all-rooms/${id}`)
-//         .then(res => {
-//             dispatch({
-//                 type: DELETE_ROOM,
-//                 payload: id
-//             })
-//         }).catch(err => console.log(err));
-// };
+export const addReservation = (room, client, from_date, to_date, price, pricesPerDay) => (dispatch) => {
 
-//registerAdmin
-export const addReservation = (room_id, from_date, to_date, price) => (dispatch, getState) => {
-    const config = getHeader(getState);
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
 
-    const body = JSON.stringify({room_id, from_date, to_date, price});
+    const body = JSON.stringify({room, client, from_date, to_date, price, pricesPerDay});
     axios.post('http://localhost:8000/api/reservations',body, config)
         .then(res => {
             dispatch({

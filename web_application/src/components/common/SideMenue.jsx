@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import RoomServiceIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import IconButton from "@material-ui/core/IconButton/IconButton";
+import RequestAvailableRoomsAndPricesForm from "../reservationPage/RequestAvailableRoomsAndPricesForm";
 
 export const drawerWidth = '500px';
 
@@ -88,7 +89,7 @@ function SideMenue(props) {
                 }}
             >
                 <Paper className={classes.paper}>
-                     { isAuthenticated ? <AdminMenu/> : <ReservationForm/> }
+                     { isAuthenticated ? <AdminMenu/> : <RequestAvailableRoomsAndPricesForm/> }
                     <Route path="/home" component={ReservationForm}/>
                 </Paper>
             </Drawer>
