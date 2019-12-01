@@ -18,30 +18,17 @@ class Room(models.Model):
     room_type   = models.CharField(max_length=1, choices=ROOM_TYPES, default='STANDARD')
     base_price  = models.IntegerField(default=0)
     image_path  = models.CharField(max_length=255, blank=True, null=True)
-    #
-    # class Meta:
-    #     ordering = ['room_type']
 
-# User?
-# class Client(models.Model):
-#     CLientId = models.AutoField(primary_key=True)
-#     FirstName = models.CharField(max_length=30, blank=True, null=True)
-#     SecondName = models.CharField(max_length=30, blank=True, null=True)
-#     email = models.EmailField(max_length=254)
 
 class Reservation(models.Model):
-    reservation_id      = models.AutoField(primary_key=True)  # rename
+    reservation_id      = models.AutoField(primary_key=True)
     room                = models.ForeignKey(Room, on_delete=models.PROTECT)
     client              = models.EmailField(max_length=254)  # models.ForeignKey(Client, on_delete=models.CASCADE)
     reservation_date    = models.DateTimeField(auto_now_add=True)
     from_date           = models.DateField()
     to_date             = models.DateField()
     price               = models.IntegerField(default=0)
-    pricesPerDay        = JSONField(default="[]")
-
-    # class Meta:
-    #     ordering = ('from_date', 'to_date')
-
+    pricesPerDay        = JSONField(default="[]", blank=False, null=False)
 
 
 class PriceReservationDate(models.Model):
@@ -70,6 +57,3 @@ class PriceReservationDate(models.Model):
         #
     class Meta:
         unique_together = ["date", "room"]
-
-
-# post_save.connect(PriceReservationDate.create_PriceReservationDate, sender=Reservation)

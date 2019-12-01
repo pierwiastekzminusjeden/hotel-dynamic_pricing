@@ -2,8 +2,6 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from .models import Room, Reservation, PriceReservationDate
-from .models import ROOM_TYPES
 
 #Registration serializers
 class RegistrationUserSerializer(serializers.ModelSerializer):
@@ -50,40 +48,3 @@ class LoginUserSerializer(serializers.Serializer):
 class ChangePasswordSerializer(serializers.Serializer):
     new_passwd = serializers.CharField(required=True)
     current_passwd = serializers.CharField(required=True)
-
-
-class RoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Room
-        fields = '__all__'
-
-
-class ReservationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reservation
-        fields = '__all__'
-
-
-class PriceReservationDateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PriceReservationDate
-        fields = '__all__'
-
-class PricingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PriceReservationDate
-        fields = '__all__'
-        # fields = ('date', 'price', 'room')
-
-
-class AvailableRoomWithPriceSerializer(serializers.Serializer):
-    room_type = serializers.ChoiceField(required=True, choices=ROOM_TYPES)
-    from_date = serializers.DateField(required=True)
-    to_date = serializers.DateField(required=True)
-
-
-
-class PricesPerDay(serializers.Serializer):
-    room = serializers.IntegerField(required=True)
-    date = serializers.DateField(required=True)
-    price = serializers.IntegerField(required=True)
