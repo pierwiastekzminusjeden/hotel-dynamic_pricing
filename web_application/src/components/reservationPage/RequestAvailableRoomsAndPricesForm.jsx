@@ -17,6 +17,8 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
 import {requestAvailableRooms} from "../../actions/availableRooms";
+import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper";
 
 
 const roomTypes = [
@@ -25,13 +27,18 @@ const roomTypes = [
     {name: 'Triple room', value: 'TRIPLE'},
     {name: 'Double room with kings bed', value: 'DELUX'}
 ];
-
+//TODO css, datapickers
 const useStyles = makeStyles(theme => ({
+
+    card: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+
     pickers: {
         display: 'flex',
         textAlign: 'center',
         margin: '5px',
-        // width: '20px'
     },
 
     formControl: {
@@ -86,13 +93,13 @@ function RequestAvailableRoomsAndPricesForm(props) {
     };
 
     return (
+        <Paper>
         <Card className={classes.card}>
-            <CardHeader
-                title="Make reservation"
-            />
             <CardContent>
                 <form onSubmit={handleSubmit}>
-                        <Card className={classes.keyboardPicker}>
+                    <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
+
+                        <Box p={5} className={classes.keyboardPicker}>
                             <Typography variant="h6">Date in</Typography>
                             <TextField
                                 // disableToolbar="true"
@@ -106,8 +113,8 @@ function RequestAvailableRoomsAndPricesForm(props) {
                                 onChange={onChangeFromDate}
                                 className={classes.pickers}
                             />
-                        </Card>
-                        <Card className={classes.keyboardPicker}>
+                        </Box>
+                        <Box p={5} className={classes.keyboardPicker}>
                             <Typography variant="h6">Date out</Typography>
                             <TextField
                                 // disableToolbar="true"
@@ -121,8 +128,8 @@ function RequestAvailableRoomsAndPricesForm(props) {
                                 onChange={onChangeToDate}
                                 className={classes.pickers}
                             />
-                        </Card>
-                        <Card className={classes.keyboardPicker}>
+                        </Box>
+                        <Box p={5} className={classes.keyboardPicker}>
                             <Typography variant="h6">Room Type</Typography>
                             <FormControl className={classes.form}>
                                 <Select
@@ -138,12 +145,15 @@ function RequestAvailableRoomsAndPricesForm(props) {
                                     ))}
                                 </Select>
                             </FormControl>
-                        </Card>
                     {/* </MuiPickersUtilsProvider> */}
                     <Button type="submit" className={classes.button}>Send request for available rooms</Button>
-                </form>
+                 </Box>
+                    </Box>
+                    </form>
             </CardContent>
         </Card>
+            <Card></Card>
+        </Paper>
     );
 }
 

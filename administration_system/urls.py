@@ -35,4 +35,7 @@ urlpatterns = [
     path('get-prices/', hotel_management_views.PricingForDateRangeView.as_view()),
     path('available-room/', hotel_management_views.AvailableRoomWithPriceView.as_view()),
 
+    path('optimize/', hotel_management_views.OptimizeView.as_view()),
+
+
 ]

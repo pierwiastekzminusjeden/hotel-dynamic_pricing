@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from business_logic.models import PriceReservationDate
+from administration_system.models import PriceReservationDate
 
 
 class PricingSerializer(serializers.ModelSerializer):

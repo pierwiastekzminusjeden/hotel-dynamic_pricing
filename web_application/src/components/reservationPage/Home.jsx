@@ -1,11 +1,12 @@
 import React from 'react';
+import Grid from '@material-ui/core/Grid';
 
 import Paper from '@material-ui/core/Paper';
 import {makeStyles} from '@material-ui/core/styles';
 
-import Carousel from "./Carousel";
-import BookingPage from "./BookingPage";
+import SearchResult from "./SearchResult";
 import ReservationForm from "./ReservationForm";
+import RequestAvailableRoomsAndPricesForm from "../reservationPage/RequestAvailableRoomsAndPricesForm";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -23,8 +24,10 @@ export default function Home() {
     const classes = useStyles();
 
     return (
+
         <Paper className={classes.paper}>
-            <Carousel/>
+            <RequestAvailableRoomsAndPricesForm/>
+            <SearchResult/>
             <ReservationForm/>
         </Paper>
     );

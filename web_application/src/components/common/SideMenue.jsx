@@ -89,7 +89,7 @@ function SideMenue(props) {
                 }}
             >
                 <Paper className={classes.paper}>
-                     { isAuthenticated ? <AdminMenu/> : <RequestAvailableRoomsAndPricesForm/> }
+                     { isAuthenticated ? <AdminMenu/> : <React.Fragment/> }
                     <Route path="/home" component={ReservationForm}/>
                 </Paper>
             </Drawer>

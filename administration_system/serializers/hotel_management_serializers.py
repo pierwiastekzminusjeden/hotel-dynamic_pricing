@@ -38,3 +38,7 @@ class PricesPerDay(serializers.Serializer):
     date = serializers.DateField(required=True)
     price = serializers.IntegerField(required=True)
 
+
+class OptimizeFromAdminPanelSerializer(serializers.Serializer):
+    optimize = serializers.BooleanField(required=True)
+    demand_file = serializers.FileField(required=False)

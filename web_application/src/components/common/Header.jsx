@@ -76,17 +76,17 @@ function Header(props) {
                     [classes.appBarShift]: open,
                 })}>
                 <Toolbar>
-                {/* if isauthenticated then show admin button, if home then show reservation, else disable button */}
-                    <IconButton
+                {/* Menu rozwijane dostępne tylko gdy użytkownik jest autoryzowany*/}
+                    {isAuthenticated ? <IconButton
                         edge="start"
                         className={classes.menuButton}
                         color="inherit"
                         aria-label="menu"
                         onClick={handleDrawer}
                         className={clsx(classes.menuButton, open)}>
-\                        {isAuthenticated ? <MenuIcon/>:  <Route exact path="/" component={RoomServiceIcon}/>}
-                    </IconButton>
-                    <Typography variant="h6" className={classes.title}>HOTEL SROTEL pjencio gfiastkofy</Typography>
+\                        <MenuIcon/>
+                    </IconButton> :  <React.Fragment/>}
+                    <Typography variant="h6" className={classes.title}>HOTEL</Typography>
                    { isAuthenticated ? authLinks : guestLinks }
                 </Toolbar>
             </AppBar>

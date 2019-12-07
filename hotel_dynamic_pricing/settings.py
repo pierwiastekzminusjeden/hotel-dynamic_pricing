@@ -148,3 +148,6 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://localhost:8000',
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'input_data')
+

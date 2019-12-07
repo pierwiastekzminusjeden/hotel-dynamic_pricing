@@ -9,9 +9,34 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {addReservation} from "../../actions/reservations";
+import Card from "@material-ui/core/Card";
+import Paper from "@material-ui/core/Paper";
+import CardContent from "@material-ui/core/CardContent";
+import Box from "@material-ui/core/Box";
+import {makeStyles} from "@material-ui/core/styles";
 
+
+const useStyles = makeStyles(theme => ({
+
+    element: {
+        margin: '20px',
+    },
+
+    root: {
+        // display: 'flex',
+        // flexWrap: 'wrap',
+        // justifyContent: 'space-around',
+        // overflow: 'hidden',
+        // position: 'relative',
+        marginTop: '40px',
+
+        backgroundColor: theme.palette.background.paper,
+    },
+}));
 
 function ReservationForm(props) {
+    const classes = useStyles();
+
     const [open, setOpen] = React.useState(false);
     const [clientEmail, setClientEmail] = React.useState(false);
 
@@ -35,17 +60,16 @@ function ReservationForm(props) {
     };
 
     return (
-        <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-              Open form dialog
-            </Button>
-            <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Provide email adress to complete reservation ;)
-                    </DialogContentText>
-                    <TextField
+        <Paper className = {classes.root}>
+            <Card >
+                {/*<DialogTitle id="form-dialog-title">Subscribe</DialogTitle>*/}
+                <CardContent>
+                    {/*<DialogContentText>*/}
+                    {/*    Provide email adress to complete reservation ;)*/}
+                    {/*</DialogContentText>*/}
+                     <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
+                         <Box>
+                             <TextField
                         autoFocus
                         margin="dense"
                         id="name"
@@ -53,18 +77,25 @@ function ReservationForm(props) {
                         type="email"
                         fullWidth
                         onChange={onChangeEmail}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={onSubmit} color="primary">
+                    /></Box>
+
+                         <Box>
+                                <Button onClick={onSubmit} color="primary">
                         Reserve
                     </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+                         </Box>
+                     </Box>
+                </CardContent>
+                {/*<DialogActions>*/}
+                {/*    <Button onClick={onClose} color="primary">*/}
+                {/*        Cancel*/}
+                {/*    </Button>*/}
+                {/*    <Button onClick={onSubmit} color="primary">*/}
+                {/*        Reserve*/}
+                {/*    </Button>*/}
+                {/*</DialogActions>*/}
+            </Card>
+        </Paper>
     );
 }
 

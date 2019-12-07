@@ -1,12 +1,14 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, ListAPIView
 from rest_framework.response import Response
+from django.core.files.storage import FileSystemStorage
 
 import datetime
 
+from administration_system.business_logic.dynamic_pricing import DynamicPricing
 from ..models import Room, Reservation, PriceReservationDate
 from ..serializers.hotel_management_serializers import ReservationSerializer, AvailableRoomWithPriceSerializer, \
-    PricingSerializer, RoomSerializer
-
+    RoomSerializer, OptimizeFromAdminPanelSerializer
+from ..serializers.dynamic_pricing_serializers import PricingSerializer
 
 #Hotel system
 class RoomView(ListCreateAPIView):
@@ -88,8 +90,12 @@ class PricingForDateRangeView(ListAPIView):
             queryset_list = self.get_pricing_objects(room_type, from_date, to_date)
         return queryset_list
 
-    def get_pricing_objects(self, room_type, date_in, date_to ):
+    def get_pricing_objects(self, room_type, date_in, date_to):
         free_rooms = Room.filter_reservations(room_type, date_in, date_to)
+        num_available_rooms = free_rooms.count()
+        num_all_rooms= Room.objects.all().count()
+        num_available = num_available_rooms - num_all_rooms
+
         try:
             if free_rooms:
                 self.create_pricing_object(free_rooms[0], date_in, date_to)
@@ -99,3 +105,24 @@ class PricingForDateRangeView(ListAPIView):
         queryset = PriceReservationDate.objects.filter(date__range=[date_in, date_to]).filter(room__exact=free_rooms[0]).distinct()
         print(queryset)
         return queryset
+
+
+
+class OptimizeView(GenericAPIView):
+    serializer_class = OptimizeFromAdminPanelSerializer
+
+    def post(self, request, *args, **kwargs):
+        run_optimize = request.data.get("optimize")
+        demand_file = request.FILES["demand_file"]
+        fs = FileSystemStorage()
+        fs.save(demand_file.name, demand_file)
+        if run_optimize:
+            pricing = DynamicPricing()
+            pricing.import_demand_from_file('input_data', demand_file.name)
+            pricing.optimize()
+            pricing.save_optimize_to_df()
+            pricing.export_optimization_result_to_csv('output_data')
+            pricing.save_to_database()
+        return Response({
+            'Przesłano plik poprawnie'
+        })
