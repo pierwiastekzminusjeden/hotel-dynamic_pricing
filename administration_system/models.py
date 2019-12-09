@@ -32,10 +32,10 @@ class Reservation(models.Model):
 
 class PriceReservationDate(models.Model):
     date        = models.DateField(default='', primary_key=True)
-    price_1      = models.IntegerField(default=100)
-    price_2      = models.IntegerField(default=100)
-    price_3      = models.IntegerField(default=100)
-    price_4      = models.IntegerField(default=100)
+    price_1_0      = models.IntegerField(default=100)
+    price_0_75      = models.IntegerField(default=100)
+    price_0_5      = models.IntegerField(default=100)
+    price_0_25      = models.IntegerField(default=100)
 
     # @staticmethod
     # @receiver(post_save, sender=Reservation)

@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 
 import Paper from '@material-ui/core/Paper';
 import {makeStyles} from '@material-ui/core/styles';
@@ -7,6 +6,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import SearchResult from "./SearchResult";
 import ReservationForm from "./ReservationForm";
 import RequestAvailableRoomsAndPricesForm from "../reservationPage/RequestAvailableRoomsAndPricesForm";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -20,15 +21,26 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Home() {
+function Home(props) {
     const classes = useStyles();
 
     return (
 
         <Paper className={classes.paper}>
             <RequestAvailableRoomsAndPricesForm/>
-            <SearchResult/>
-            <ReservationForm/>
+            {props.roomId && props.pricingData ? <React.Fragment> <SearchResult/> <ReservationForm/> </React.Fragment> : <React.Fragment/>}
         </Paper>
     );
 }
+
+Home.propTypes = {
+    roomId: PropTypes.object.isRequired,
+    pricingData: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    roomId: state.availableRooms.roomId,
+    pricingData: state.availableRooms.pricingData
+});
+
+export default connect(mapStateToProps, {})(Home);

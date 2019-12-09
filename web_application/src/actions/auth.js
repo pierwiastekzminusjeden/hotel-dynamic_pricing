@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { stopSubmit } from 'redux-form';
 
 import {
-    USER_LOADING,
-    USER_LOADED,
-
     AUTH_ERROR,
-    LOGIN_SUCCESS,
+    CHANGE_PASSWORD_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT_SUCCESS, CHANGE_PASSWORD_SUCCESS, REGISTER_USER_SUCCESS
+    LOGIN_SUCCESS,
+    LOGOUT_SUCCESS,
+    REGISTER_USER_SUCCESS,
+    USER_LOADED,
+    USER_LOADING
 } from './types';
 
 // LOAD USER check token and load user
@@ -119,7 +119,7 @@ export const getHeader = getState => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }
+    };
 
     if (token) {
         config.headers['Authorization'] = 'Token ' + token;

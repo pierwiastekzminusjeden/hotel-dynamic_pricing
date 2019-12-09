@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {HashRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import React, {useEffect} from "react";
+import {HashRouter as Router, Route, Switch} from "react-router-dom";
 import {Provider} from 'react-redux';
 
 import PrivateRoute from "./common/PrivateRoute";
@@ -12,10 +12,9 @@ import Header from './common/Header';
 import AdminPanel from "./adminPage/AdminPanel";
 import ChangePasswordForm from "./common/ChangePasswordForm";
 import RegisterAdminForm from "./adminPage/RegisterAdminForm";
-import AddRoomForm from "./adminPage/AddRoomForm";
-import RoomList from "./adminPage/RoomList";
 import Rooms from "./adminPage/Rooms";
 import Reservations from "./adminPage/Reservations"
+import ErrorSnackbar from "./common/ErrorSnackbar";
 
 export default function App(props) {
 
@@ -25,6 +24,7 @@ export default function App(props) {
 
     return (
         <Provider store={store}>
+            <ErrorSnackbar/>
             <Router>
                 <Header/>
                     <Switch>

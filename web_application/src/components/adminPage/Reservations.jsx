@@ -1,6 +1,6 @@
 import React from 'react';
 import AddReservationForm from "./AddReservationForm";
-// import ReservationsList from "./ReservationsList";
+import ReservationList from "./ReservationList";
 
 
 export default function Reservations() {
@@ -8,7 +8,7 @@ export default function Reservations() {
     return (
         <React.Fragment>
             <AddReservationForm/>
-            {/* <ReservationsList/> */}
+             <ReservationList/>
         </React.Fragment>
     )
 }

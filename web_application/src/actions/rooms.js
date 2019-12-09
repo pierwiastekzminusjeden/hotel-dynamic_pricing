@@ -1,7 +1,4 @@
-import {
-    GET_ROOMS,
-    DELETE_ROOM, REGISTER_USER_SUCCESS, AUTH_ERROR, ADD_ROOM_SUCCESS
-} from "./types";
+import {ADD_ROOM_SUCCESS, DELETE_ROOM, GET_ERRORS, GET_ROOMS} from "./types";
 
 import axios from 'axios';
 import {getHeader} from "./auth";
@@ -18,11 +15,18 @@ export const getRooms = () => (dispatch, getState) => {
                 type: GET_ROOMS,
                 payload: res.data
             })
-        }).catch(err => console.log(err));
-};
+        }).catch(err =>{
+        const errors = {
+            message: err.response.data,
+            status: err.response.status
+        };
+        dispatch({
+            type: GET_ERRORS,
+            payload: errors
+        })
+    })};
 
 export const deleteRoom = (id) => (dispatch, getState) => {
-    console.log("hehe");
     const config = getHeader(getState);
 
     axios.delete(`http://localhost:8000/api/room/${id}`)
@@ -31,8 +35,17 @@ export const deleteRoom = (id) => (dispatch, getState) => {
                 type: DELETE_ROOM,
                 payload: id
             })
-        }).catch(err => console.log(err));
-};
+        }).catch(err => {
+        const errors = {
+            message: err.response.data,
+            status: err.response.status
+        };
+        dispatch({
+            type: GET_ERRORS,
+            payload: errors
+        })
+    })};
+
 
 //registerAdmin
 export const addRoom = (room_number, room_type, base_price_per_night, image_path) => (dispatch, getState) => {
@@ -45,8 +58,16 @@ export const addRoom = (room_number, room_type, base_price_per_night, image_path
                 type: ADD_ROOM_SUCCESS,
                 payload: res.data
             });
-        }).catch(err => console.log(err));
-};
+        }).catch(err =>{
+        const errors = {
+            message: err.response.data,
+            status: err.response.status
+        };
+        dispatch({
+            type: GET_ERRORS,
+            payload: errors
+        })
+    })};
 
 export const getAvailableRooms = (room_type, date_from, date_to) => (dispatch) => {
     date_from = date_from.format()
@@ -58,6 +79,14 @@ export const getAvailableRooms = (room_type, date_from, date_to) => (dispatch) =
                 type: GET_ROOMS,
                 payload: res.data
             })
-        }).catch(err => console.log(err));
-};
+        }).catch(err =>{
+        const errors = {
+            message: err.response.data,
+            status: err.response.status
+        };
+        dispatch({
+            type: GET_ERRORS,
+            payload: errors
+        })
+    })};
 

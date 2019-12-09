@@ -1,11 +1,9 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {getRooms, deleteRoom} from "../../actions/rooms";
-import store from "../../store";
-import {loadUser} from "../../actions/auth";
+import {deleteRoom, getRooms} from "../../actions/rooms";
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -42,7 +40,6 @@ function RoomList(props) {
                             <TableCell align="right">Room number</TableCell>
                             <TableCell align="right">Room Type</TableCell>
                             <TableCell align="right">base price per night</TableCell>
-                            <TableCell align="right">image path</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -53,8 +50,7 @@ function RoomList(props) {
                                 </TableCell>
                                 <TableCell align="right">{room.room_number}</TableCell>
                                 <TableCell align="right">{room.room_type}</TableCell>
-                                <TableCell align="right">{room.base_price_per_night}</TableCell>
-                                <TableCell align="right">{room.image_path}</TableCell>
+                                <TableCell align="right">{room.base_price}</TableCell>
                                 <TableCell align="right"><Button onClick ={props.deleteRoom.bind(this, room.room_id)}>Delete</Button></TableCell>
                             </TableRow>
                         ))}

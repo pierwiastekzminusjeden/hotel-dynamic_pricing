@@ -1,8 +1,4 @@
-import {
-    ADD_ROOM_SUCCESS,
-    DELETE_ROOM,
-    GET_ROOMS
-} from "../actions/types";
+import {ADD_ROOM_SUCCESS, DELETE_ROOM, GET_ROOMS} from "../actions/types";
 
 const initialState = {
     rooms: []

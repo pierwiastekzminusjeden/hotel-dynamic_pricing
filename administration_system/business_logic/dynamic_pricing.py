@@ -53,7 +53,7 @@ class DynamicPricing:
         for capacity in optimization_result.keys():
             self.df_optimization_result = pd.concat([self.df_optimization_result,
                                                      pd.DataFrame(optimization_result[capacity]['x'],
-                                                                  columns=['{}'.format(capacity)], index=time_array)],
+                                                                  columns=['{}'.format(capacity/self.capacities_bucket[-1])], index=time_array)],
                                                     axis=1)
         self.df_optimization_result.index = self.df_demand['date'].values
         self.df_optimization_result.index.name = 'date'
@@ -72,14 +72,17 @@ class DynamicPricing:
         for index, row in self.df_optimization_result.iterrows():
             obj, created = PriceReservationDate.objects.get_or_create(date=pd.to_datetime(index).date())
             if created:
-                obj.price_1 = row['20.0']
-                obj.price_2 = row['15.0']
-                obj.price_3 = row['10.0']
-                obj.price_4 = row['5.0']
-                obj.save(update_fields=['price_1', 'price_2', 'price_3', 'price_4'])
+                obj.price_1_0 = row['1.0']
+                obj.price_0_75 = row['0.75']
+                obj.price_0_5 = row['0.5']
+                obj.price_0_25 = row['0.25']
+                obj.save(update_fields=['price_1_0', 'price_0_75', 'price_0_5', 'price_0_25'])
             else:
-                obj = PriceReservationDate(date=pd.to_datetime(index).date(), price_1=row['20.0'], price_2=row['15.0'], price_3=row['10.0'], price_4=row['5.0'])
+                obj = PriceReservationDate(date=pd.to_datetime(index).date(), price_1_0 = row['1.0'], price_0_75 = row['0.75'], price_0_5 = row['0.5'], price_0_25 = row['0.25'])
                 obj.save()
+
+
+
 # def pricing(room_type, from_date, to_date):
 #
 #

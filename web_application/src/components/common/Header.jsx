@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, Route} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -11,7 +11,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import RoomServiceIcon from '@material-ui/icons/RoomService';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import SideMenue, {drawerWidth} from './SideMenue';

@@ -7,12 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import AdminMenu from '../adminPage/AdminMenu';
 
 import ReservationForm from '../reservationPage/ReservationForm';
-import Toolbar from "@material-ui/core/Toolbar";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import RoomServiceIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import RequestAvailableRoomsAndPricesForm from "../reservationPage/RequestAvailableRoomsAndPricesForm";
 
 export const drawerWidth = '500px';
 

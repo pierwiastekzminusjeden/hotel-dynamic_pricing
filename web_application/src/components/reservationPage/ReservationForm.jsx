@@ -1,11 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {addReservation} from "../../actions/reservations";
@@ -21,7 +16,14 @@ const useStyles = makeStyles(theme => ({
     element: {
         margin: '20px',
     },
-
+    button: {
+        display: 'flex',
+        width: '100%',
+        textAlign: 'center',
+        border: 'dotted',
+        borderWidth: '0.5px',
+        borderRadius: '5px'
+    },
     root: {
         // display: 'flex',
         // flexWrap: 'wrap',
@@ -29,71 +31,51 @@ const useStyles = makeStyles(theme => ({
         // overflow: 'hidden',
         // position: 'relative',
         marginTop: '40px',
-
-        backgroundColor: theme.palette.background.paper,
+        // backgroundColor: theme.palette.background.paper,
     },
 }));
 
 function ReservationForm(props) {
     const classes = useStyles();
 
-    const [open, setOpen] = React.useState(false);
     const [clientEmail, setClientEmail] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const onClose = () => {
-        setOpen(false);
-    };
-
+    const disabled = !clientEmail;
     const onChangeEmail = (type) => {
         setClientEmail(type.target.value);
-    }
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(props.pricingData)
-        props.addReservation(props.roomId.room_id, clientEmail, '2019-09-01', '2019-09-05', 0, JSON.stringify(props.pricingData));
-        setOpen(false);
+        props.addReservation(props.roomId.room_id, clientEmail,
+            props.pricingData[0].date, props.pricingData[props.pricingData.length - 1].date, props.pricingData.map(e => e.price).reduce((a,b) => a + b, 0));
     };
 
     return (
-        <Paper className = {classes.root}>
-            <Card >
-                {/*<DialogTitle id="form-dialog-title">Subscribe</DialogTitle>*/}
+        <Paper className={classes.root}>
+            <Card>
                 <CardContent>
-                    {/*<DialogContentText>*/}
-                    {/*    Provide email adress to complete reservation ;)*/}
-                    {/*</DialogContentText>*/}
-                     <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-                         <Box>
-                             <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Email Address"
-                        type="email"
-                        fullWidth
-                        onChange={onChangeEmail}
-                    /></Box>
+                    <Box display="flex" flexDirection="row" p={1} m={1}>
+                        <Box mr={10} ml={10}>
+                            <TextField
+                                autoFocus
+                                id="name"
+                                label="Email Address"
+                                type="email"
+                                fullWidth
+                                onChange={onChangeEmail}
+                            />
+                        </Box>
 
-                         <Box>
-                                <Button onClick={onSubmit} color="primary">
-                        Reserve
-                    </Button>
-                         </Box>
-                     </Box>
+                        <Box ml={10}>
+                            <Button
+                                onClick={onSubmit}
+                                disabled = {disabled}
+                                className={classes.button}>
+                                Make reservation
+                            </Button>
+                        </Box>
+                    </Box>
                 </CardContent>
-                {/*<DialogActions>*/}
-                {/*    <Button onClick={onClose} color="primary">*/}
-                {/*        Cancel*/}
-                {/*    </Button>*/}
-                {/*    <Button onClick={onSubmit} color="primary">*/}
-                {/*        Reserve*/}
-                {/*    </Button>*/}
-                {/*</DialogActions>*/}
             </Card>
         </Paper>
     );

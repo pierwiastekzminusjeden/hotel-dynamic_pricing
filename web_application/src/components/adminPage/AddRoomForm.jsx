@@ -8,11 +8,9 @@ import TextField from '@material-ui/core/TextField';
 import Paper from "@material-ui/core/Paper/Paper";
 import Typography from "@material-ui/core/Typography/Typography";
 import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import Card from "@material-ui/core/Card/Card";
 import {addRoom} from "../../actions/rooms";
 
 
@@ -45,8 +43,8 @@ const useStyles = makeStyles(theme => ({
 const roomTypes = [
     {name: 'Single room', value: 'SINGLE'},
     {name: 'Double standard room', value: 'STANDARD'},
-    {name: 'Triple room', value: 'TRIPLE'},
-    {name: 'Double room with kings bed', value: 'DELUX'}
+    // {name: 'Triple room', value: 'TRIPLE'},
+    // {name: 'Double room with kings bed', value: 'DELUX'}
 ];
 
 function AddRoomForm(props) {
@@ -55,7 +53,6 @@ function AddRoomForm(props) {
     const [room_number, setRoom_number] = React.useState();
     const [room_type, setRoom_type] = React.useState();
     const [base_price_per_night, setBase_price_per_night] = React.useState();
-    const [image_path, setImage_path] = React.useState();
     const disabled = !(room_number && room_type && base_price_per_night);
 
     const onSubmit = e => {
@@ -75,10 +72,6 @@ function AddRoomForm(props) {
     const onChangeBasePrice = e => {
         const {target: {name, value}} = e;
         setBase_price_per_night(value);
-    };
-    const onChangeImagePath = e => {
-        const {target: {name, value}} = e;
-        setImage_path(value);
     };
 
     return (
@@ -121,17 +114,6 @@ function AddRoomForm(props) {
                     type="number"
                     defaultValue={base_price_per_night}
                     onChange={onChangeBasePrice}
-                />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="imagePath"
-                    label="image path"
-                    type="path"
-                    defaultValue={image_path}
-                    onChange={onChangeImagePath}
                 />
                 <Button
                     type="submit"

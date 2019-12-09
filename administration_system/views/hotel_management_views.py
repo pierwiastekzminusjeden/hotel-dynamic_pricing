@@ -64,7 +64,7 @@ class AvailableRoomWithPriceView(GenericAPIView):
             })
 
         return Response({
-            "error": "available room not found"
+            "error": "Brak dostępnych pokoi"
         })
 
     @staticmethod
@@ -73,37 +73,36 @@ class AvailableRoomWithPriceView(GenericAPIView):
         end_date = date_to
         prices = []
         while current_date <= end_date:
-            prices.append({'date': current_date, 'price': 0})
+            prices.append({'date': current_date, 'price': AvailableRoomWithPriceView.get_optimal_price(room, current_date)})
             current_date += datetime.timedelta(days=1)
         return prices
 
+    @staticmethod
+    def get_optimal_price(room, date):
+        free_rooms = RoomView.filter_reservations(room.room_type, date, date + datetime.timedelta(days=1)).count()
+        ratio = free_rooms/Room.objects.all().count()
+        print(free_rooms)
+        price = room.base_price
+        try:
+            obj = PriceReservationDate.objects.get(date=date)
+            if 0 < ratio <= 0.25:
+                price = obj.price_0_25
+            elif 0.25 < ratio <= 0.5:
+                price = obj.price_0_5
+            elif 0.5 < ratio <= 0.75:
+                price = obj.price_0_75
+            elif 0.75 < ratio <= 1:
+                price = obj.price_1_0
+        except:
+            pass
+        return price
 
 class PricingForDateRangeView(ListAPIView):
     serializer_class = PricingSerializer
 
     def get_queryset(self, *args, **kwargs):
         queryset_list = PriceReservationDate.objects.all()
-        room_type = self.request.GET.get("q")
-        from_date = self.request.GET.get("q2")
-        to_date = self.request.GET.get("q3")
-        if room_type:
-            queryset_list = self.get_pricing_objects(room_type, from_date, to_date)
         return queryset_list
-
-    def get_pricing_objects(self, room_type, date_in, date_to):
-        free_rooms = Room.filter_reservations(room_type, date_in, date_to)
-        num_available_rooms = free_rooms.count()
-        num_all_rooms= Room.objects.all().count()
-        num_available = num_available_rooms - num_all_rooms
-
-        try:
-            if free_rooms:
-                self.create_pricing_object(free_rooms[0], date_in, date_to)
-        except:
-            print("already done")
-
-        queryset = PriceReservationDate.objects.filter(date__range=[date_in, date_to]).filter(room__exact=free_rooms[0]).distinct()
-        print(queryset)
         return queryset
 
 

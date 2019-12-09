@@ -7,12 +7,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Paper from "@material-ui/core/Paper/Paper";
 import Typography from "@material-ui/core/Typography/Typography";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Select from "@material-ui/core/Select/Select";
-import Input from "@material-ui/core/Input/Input";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import Card from "@material-ui/core/Card/Card";
 import {addReservation} from "../../actions/reservations";
 
 
@@ -50,12 +44,13 @@ function AddReservationForm(props) {
     const [from_date, setFromDate] = React.useState();
     const [to_date, setToDate] = React.useState();
     const [price, setPrice] = React.useState();
-    const disabled = !(room_id && from_date && to_date && price);
+    const [email, setEmail] = React.useState();
+    const disabled = !(room_id && from_date && to_date && price && email);
 
 
     const onSubmit = e => {
         e.preventDefault();
-        props.addReservation(room_id, from_date, to_date, price);
+        props.addReservation(room_id, email,  from_date, to_date, price);
     };
     const onChangeRoom = e => {
         const {target: {name, value}} = e;
@@ -73,6 +68,11 @@ function AddReservationForm(props) {
     const onChangePrice = e => {
         const {target: {name, value}} = e;
         setPrice(value);
+    };
+
+    const onChangeEmail = e => {
+        const {target: {name, value}} = e;
+        setEmail(value);
     };
   
 
@@ -103,6 +103,18 @@ function AddReservationForm(props) {
                     defaultValue={price}
                     autoFocus
                     onChange={onChangePrice}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="email"
+                    type="text"
+                    defaultValue={email}
+                    autoFocus
+                    onChange={onChangeEmail}
                 />
                 <TextField
                     variant="outlined"

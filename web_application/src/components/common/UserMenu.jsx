@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import clsx from "clsx";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {logout} from "../../actions/auth";
+
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
