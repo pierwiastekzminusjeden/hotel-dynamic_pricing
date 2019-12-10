@@ -15,6 +15,7 @@ import RegisterAdminForm from "./adminPage/RegisterAdminForm";
 import Rooms from "./adminPage/Rooms";
 import Reservations from "./adminPage/Reservations"
 import ErrorSnackbar from "./common/ErrorSnackbar";
+import Prices from "./adminPage/Prices";
 
 export default function App(props) {
 
@@ -35,6 +36,7 @@ export default function App(props) {
                         <PrivateRoute path="/admins" component={RegisterAdminForm}/>
                         <Route exact path="/rooms" component={Rooms}/>
                         <Route exact path="/reservations" component={Reservations}/>
+                        <Route exact path="/prices" component={Prices}/>
                     </Switch>
             </Router>
         </Provider>

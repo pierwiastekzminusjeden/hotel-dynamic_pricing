@@ -30,9 +30,10 @@ urlpatterns = [
 
     path('rooms/', hotel_management_views.RoomView.as_view()),
     path('room/<int:pk>', hotel_management_views.RoomDetail.as_view()),
-    path('reservations', hotel_management_views.ReservationList.as_view()),
+    path('reservations', hotel_management_views.ReservationView.as_view()),
     path('reservation/<int:pk>', hotel_management_views.ReservationDetail.as_view()),
-    path('get-prices/', hotel_management_views.PricingForDateRangeView.as_view()),
+    path('prices/', hotel_management_views.PricingForDateRangeView.as_view()),
+    path('price/<str:pk>', hotel_management_views.PricingForDateRangeDetail.as_view()),
     path('available-room/', hotel_management_views.AvailableRoomWithPriceView.as_view()),
 
     path('optimize/', hotel_management_views.OptimizeView.as_view()),

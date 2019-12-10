@@ -19,11 +19,11 @@ class DynamicPricing:
     def elasticity_demand_price(self, price, nominal_demand):
         return nominal_demand * (price / self.nominal_price) ** (self.elasticity)
 
-    def function_to_optimalize(self, p_t, nominal_demand):
-        return (-1.0 * np.sum(p_t * self.elasticity_demand_price(p_t, nominal_demand=nominal_demand))) / 100
+    def function_to_optimalize(self, prices, nominal_demand):
+        return (-1.0 * np.sum(prices * self.elasticity_demand_price(prices, nominal_demand=nominal_demand))) / 100
 
-    def constraint_excess(self, p_t, capacity=5, nominal_demand=35.0):
-        return capacity - self.elasticity_demand_price(p_t, nominal_demand=nominal_demand)
+    def constraint_excess(self, prices, capacity=5, nominal_demand=35.0):
+        return capacity - self.elasticity_demand_price(prices, nominal_demand=nominal_demand)
 
     def optimize(self):
         if self.df_demand is None:
@@ -35,7 +35,7 @@ class DynamicPricing:
             init_res = self.nominal_price * np.ones(len(nominal_demand))
             # granice cen
             bounds = tuple((50.0, 350.0) for i in init_res)
-            constraints = (  # {'type':'ineq','fun': lambda x : constraint_1(x)},
+            constraints = (
                 {'type': 'ineq',
                  'fun': lambda x, capacity=capacity, nominal_demand=nominal_demand: self.constraint_excess(x,
                                                                                                            capacity=capacity,
@@ -80,23 +80,3 @@ class DynamicPricing:
             else:
                 obj = PriceReservationDate(date=pd.to_datetime(index).date(), price_1_0 = row['1.0'], price_0_75 = row['0.75'], price_0_5 = row['0.5'], price_0_25 = row['0.25'])
                 obj.save()
-
-
-
-# def pricing(room_type, from_date, to_date):
-#
-#
-#     valid_rooms = Room.objects.filter(room_type__contains=room_type)
-#     reserved_rooms_id = Reservation.objects.filter(room__in=valid_rooms).filter(to_date__gt=from_date).filter(
-#         from_date__lte=to_date).values('room')
-#     reserved_rooms = Room.objects.filter(room_id__in=reserved_rooms_id).count()
-#
-#     valid_rooms_pd = pd.DataFrame(list(valid_rooms))
-#     reserved_rooms_pd = pd.DataFrame(list(reserved_rooms))
-#
-#     num_of_valid_rooms = valid_rooms_pd.count()
-#     if num_of_valid_rooms%2 != 0:
-#         buckets = [ (num_of_valid_rooms-1)*0.25, (num_of_valid_rooms-1)*0.5, (num_of_valid_rooms-1)*0.75, num_of_valid_rooms]
-#     buckets = [ (num_of_valid_rooms-1)*0.25, (num_of_valid_rooms-1)*0.5, (num_of_valid_rooms-1)*0.75, num_of_valid_rooms]
-#
-

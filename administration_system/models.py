@@ -6,9 +6,7 @@ from django.db import models, transaction
 
 ROOM_TYPES = (
     ('SINGLE', 'Single room'),
-    ('STANDARD', 'Double standard room'),
-    ('TRIPLE', 'Triple room'),
-    ('DELUX', 'Double room with kings bed'),
+    ('STANDARD', 'Double standard room')
 )
 
 class Room(models.Model):
@@ -16,7 +14,6 @@ class Room(models.Model):
     room_number = models.IntegerField(default=1)
     room_type   = models.CharField(max_length=8, choices=ROOM_TYPES, default='STANDARD')
     base_price  = models.IntegerField(default=100)
-    # image_path  = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Reservation(models.Model):
@@ -27,33 +24,11 @@ class Reservation(models.Model):
     from_date           = models.DateField()
     to_date             = models.DateField()
     price               = models.IntegerField(default=0)
-    # pricesPerDay        = JSONField(default="[]", blank=False, null=False)
 
 
 class PriceReservationDate(models.Model):
-    date        = models.DateField(default='', primary_key=True)
-    price_1_0      = models.IntegerField(default=100)
+    date            = models.DateField(default='', primary_key=True)
+    price_1_0       = models.IntegerField(default=100)
     price_0_75      = models.IntegerField(default=100)
-    price_0_5      = models.IntegerField(default=100)
+    price_0_5       = models.IntegerField(default=100)
     price_0_25      = models.IntegerField(default=100)
-
-    # @staticmethod
-    # @receiver(post_save, sender=Reservation)
-    # def create_PriceReservationDate(sender, instance, **kwargs):
-    #     reservation = instance
-    #     room = instance.room
-    #     jsonstring= instance.pricesPerDay
-    #     transaction.set_autocommit(False)
-    #     try:
-    #         data = json.loads(jsonstring)
-    #         PriceReservationDate.objects.bulk_create([PriceReservationDate(date=obj['date'], price = obj['price'],room=room,reservation=reservation) for obj in data])
-    #     except:
-    #         transaction.rollback()
-    #         raise
-    #     else:
-    #         transaction.commit()
-    #     finally:
-    #         transaction.set_autocommit(True)
-    #     #
-    # class Meta:
-    #     unique_together = ["date", "room"]

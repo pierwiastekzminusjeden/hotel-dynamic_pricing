@@ -14,10 +14,10 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
 
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+        width: drawerWidth,
+    },
 }));
 
 export default function AdminMenu(props) {
@@ -25,44 +25,32 @@ export default function AdminMenu(props) {
     const adminsLink = props => <Link to="/admins" {...props} />;
     const roomsLink = props => <Link to="/rooms" {...props} />;
     const reservationsLink = props => <Link to="/reservations" {...props} />;
+    const pricesLink = props => <Link to="/prices" {...props} />;
 
     return (
         <Card className={classes.card}>
-            <div>
-                <div className={classes.toolbar}/>
-                <Divider/>
-                    <ListItem button key={'Add new admin'} component = {adminsLink}>
-                        <ListItemIcon><PersonAddIcon/></ListItemIcon>
-                        <ListItemText primary={'Add new admin'}/>
-                    </ListItem>
-                    <ListItem button key={'Rooms'} component = {roomsLink}>
-                        <ListItemIcon><HotelIcon/></ListItemIcon>
-                        <ListItemText primary={'Rooms'}/>
-                    </ListItem>
-                    <ListItem button key={'Reservations'} component = {reservationsLink}>
-                        <ListItemIcon><HotelIcon/></ListItemIcon>
-                        <ListItemText primary={'Reservations'}/>
-                    </ListItem>
-                <List>
-                </List>
-                {/*<List>*/}
-                    {/*{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (*/}
-                        {/*<ListItem button key={text}>*/}
-                            {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>*/}
-                            {/*<ListItemText primary={text}/>*/}
-                        {/*</ListItem>*/}
-                    {/*))}*/}
-                {/*</List>*/}
-                {/*<Divider/>*/}
-                {/*<List>*/}
-                    {/*{['All mail', 'Trash', 'Spam'].map((text, index) => (*/}
-                        {/*<ListItem button key={text}>*/}
-                            {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>*/}
-                            {/*<ListItemText primary={text}/>*/}
-                        {/*</ListItem>*/}
-                    {/*))}*/}
-                {/*</List>*/}
-            </div>
+            <div className={classes.toolbar}/>
+            <Divider/>
+            <ListItem button key={'Dodaj administratora'} component={adminsLink}>
+                <ListItemIcon><PersonAddIcon/></ListItemIcon>
+                <ListItemText primary={'Dodaj administratora'}/>
+            </ListItem>
+            <ListItem button key={'Pokoje'} component={roomsLink}>
+                <ListItemIcon><HotelIcon/></ListItemIcon>
+                <ListItemText primary={'Pokoje'}/>
+            </ListItem>
+            <ListItem button key={'rezerwacje'} component={reservationsLink}>
+                <ListItemIcon><HotelIcon/></ListItemIcon>
+                <ListItemText primary={'Rezerwacje'}/>
+            </ListItem>
+            <ListItem button key={'Wyceny'} component={pricesLink}>
+                <ListItemIcon><HotelIcon/></ListItemIcon>
+                <ListItemText primary={'Wyceny'}/>
+            </ListItem>
+            {/*<ListItem button key={'Optymalizator cenowy'} component={}>*/}
+                {/*<ListItemIcon><HotelIcon/></ListItemIcon>*/}
+                {/*<ListItemText primary={'Optymalizator cenowy'}/>*/}
+            {/*</ListItem>*/}
         </Card>
     );
 }

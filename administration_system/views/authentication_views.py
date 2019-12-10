@@ -11,17 +11,13 @@ from ..serializers.authorization_serializers import UserSerializer, LoginUserSer
     RegistrationUserSerializer, ChangePasswordSerializer
 
 
-class RegistrationView(GenericAPIView):
-    serializer_class = RegistrationUserSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
-        })
+class UserView(RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -51,14 +47,6 @@ class LoginView(GenericAPIView):
         })
 
 
-class UserView(RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated, ]
-    serializer_class = UserSerializer
-
-    def get_object(self):
-        return self.request.user
-
-
 class ChangePasswordView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = ChangePasswordSerializer
@@ -75,4 +63,17 @@ class ChangePasswordView(RetrieveUpdateAPIView):
         return Response({
             "user": UserSerializer(self.object, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(self.object)[1]
+        })
+
+
+class RegistrationView(GenericAPIView):
+    serializer_class = RegistrationUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
         })

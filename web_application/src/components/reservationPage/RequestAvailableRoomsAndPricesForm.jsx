@@ -84,14 +84,13 @@ function RequestAvailableRoomsAndPricesForm(props) {
     const handleSubmit = e => {
         if(selectedInDate > selectedOutDate) {
             const errors = {
-                message:'Data zameldowania musi być wcześniejsza niż data wymeldowania',
+                message: 'Data zameldowania musi być wcześniejsza niż data wymeldowania',
                 status: -1
             };
             store.dispatch({
                 type: GET_ERRORS,
                 payload: errors
             });
-            // alert('Data zameldowania musi być wcześniejsza niż data wymeldowania');
             setSelectedInDate(format(Date.now(), 'yyyy-MM-dd'));
             setSelectedOutDate(format(Date.now(), 'yyyy-MM-dd'));
         } else {

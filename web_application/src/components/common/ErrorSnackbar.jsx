@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
     close: {
-        padding: theme.spacing(0.5),
+        padding: theme.spacing(0.5)
     },
 }));
 
@@ -18,13 +18,11 @@ function ErrorSnackbar(props) {
     const [error, setError] = React.useState('');
 
     useEffect(() => {
-
-        console.log(props.message);
-        const errorMessage = 'Error ' + props.status + ': ' +JSON.stringify(props.message, undefined, 2);
+        const errorMessage = props.errorMessage;
         setError(errorMessage);
-        if(props.status !== null)
+        if(props.errorMessage !== null)
             setOpen(true);
-    }, [props.status, props.message]);
+    }, [props.serverResponseStatus, props.serverMessage, props.errorMessage]);
 
     const handleClose = () => {
         setOpen(false);
@@ -62,13 +60,15 @@ function ErrorSnackbar(props) {
 
 
 ErrorSnackbar.propTypes = {
-    message: PropTypes.object.isRequired,
-    status: PropTypes.object.isRequired
+    errorMessage: PropTypes.object.isRequired,
+    serverResponseStatus: PropTypes.object.isRequired,
+    serverMessage: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    message: state.errors.message,
-    status: state.errors.status
+    errorMessage: state.errors.errorMessage,
+    serverResponseStatus: state.errors.serverResponseStatus,
+    serverMessage: state.errors.serverMessage
 });
 
 export default connect(mapStateToProps, {})(ErrorSnackbar);

@@ -32,7 +32,7 @@ class RoomDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = RoomSerializer
 
 
-class ReservationList(ListCreateAPIView):
+class ReservationView(ListCreateAPIView):
     # permission_classes = [IsAuthenticated, ]  #it works
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
@@ -42,6 +42,19 @@ class ReservationDetail(RetrieveUpdateDestroyAPIView):
     # permission_classes = [IsAuthenticated, ]  #it works
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+
+
+class PricingForDateRangeView(ListAPIView):
+    # permission_classes = [IsAuthenticated, ]  #it works
+
+    queryset = PriceReservationDate.objects.all()
+    serializer_class = PricingSerializer
+
+
+class PricingForDateRangeDetail(RetrieveUpdateDestroyAPIView):
+    # permission_classes = [IsAuthenticated, ]  #it works
+    queryset = PriceReservationDate.objects.all()
+    serializer_class = PricingSerializer
 
 
 class AvailableRoomWithPriceView(GenericAPIView):
@@ -63,9 +76,7 @@ class AvailableRoomWithPriceView(GenericAPIView):
                 "price": prices_for_room
             })
 
-        return Response({
-            "error": "Brak dostępnych pokoi"
-        })
+        return JsonResponse({'message': 'Brak dostępnych pokoi tego typu'}, status=204)
 
     @staticmethod
     def create_pricing_object(room, date_in, date_to):
@@ -83,31 +94,22 @@ class AvailableRoomWithPriceView(GenericAPIView):
         ratio = free_rooms/Room.objects.all().count()
         print(free_rooms)
         price = room.base_price
-        try:
-            obj = PriceReservationDate.objects.get(date=date)
-            if 0 < ratio <= 0.25:
-                price = obj.price_0_25
-            elif 0.25 < ratio <= 0.5:
-                price = obj.price_0_5
-            elif 0.5 < ratio <= 0.75:
-                price = obj.price_0_75
-            elif 0.75 < ratio <= 1:
-                price = obj.price_1_0
-        except:
-            pass
+
+        obj = PriceReservationDate.objects.get(date=date)
+
+        if 0 < ratio <= 0.25 and obj:
+            price = obj.price_0_25
+        elif 0.25 < ratio <= 0.5 and obj:
+            price = obj.price_0_5
+        elif 0.5 < ratio <= 0.75 and obj:
+            price = obj.price_0_75
+        elif 0.75 < ratio <= 1 and obj:
+            price = obj.price_1_0
+
         return price
 
-class PricingForDateRangeView(ListAPIView):
-    serializer_class = PricingSerializer
-
-    def get_queryset(self, *args, **kwargs):
-        queryset_list = PriceReservationDate.objects.all()
-        return queryset_list
-        return queryset
-
-
-
 class OptimizeView(GenericAPIView):
+    # permission_classes = [IsAuthenticated, ]  #it works
     serializer_class = OptimizeFromAdminPanelSerializer
 
     def post(self, request, *args, **kwargs):
@@ -122,6 +124,4 @@ class OptimizeView(GenericAPIView):
             pricing.save_optimize_to_df()
             pricing.export_optimization_result_to_csv('output_data')
             pricing.save_to_database()
-        return Response({
-            'Przesłano plik poprawnie'
-        })
+        return JsonResponse({'message': 'Przetważanie danych'}, status=202)

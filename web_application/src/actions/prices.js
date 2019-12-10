@@ -1,4 +1,9 @@
-import {ADD_RESERVATION_SUCCESS, DELETE_RESERVATION, GET_ERRORS, GET_RESERVATION} from "./types";
+import {
+    ADD_PRICE_SUCCESS,
+    DELETE_PRICE,
+    GET_ERRORS,
+    GET_PRICES,
+} from "./types";
 
 import axios from 'axios';
 import {getHeader} from "./auth";
@@ -7,13 +12,13 @@ axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
 
-export const getReservations = () => (dispatch, getState) => {
+export const getPrices = () => (dispatch, getState) => {
     const config = getHeader(getState);
 
-    axios.get('http://localhost:8000/api/reservations', config)
+    axios.get('http://localhost:8000/api/prices', config)
         .then(res => {
             dispatch({
-                type: GET_RESERVATION,
+                type: GET_PRICES,
                 payload: res.data
             })
         }).catch(err =>{
@@ -27,13 +32,13 @@ export const getReservations = () => (dispatch, getState) => {
         })
     })};
 
-export const deleteReservation = (id) => (dispatch, getState) => {
+export const deletePrice = (id) => (dispatch, getState) => {
     const config = getHeader(getState);
 
-    axios.delete(`http://localhost:8000/api/reservation/${id}`)
+    axios.delete(`http://localhost:8000/api/price/${id}`)
         .then(res => {
             dispatch({
-                type: DELETE_RESERVATION,
+                type: DELETE_PRICE,
                 payload: id
             })
         }).catch(err =>{
@@ -47,7 +52,7 @@ export const deleteReservation = (id) => (dispatch, getState) => {
         })
     })};
 
-export const addReservation = (room, client, from_date, to_date, price) => (dispatch) => {
+export const addPrice = (date, price) => (dispatch) => {
 
     const config = {
         headers: {
@@ -55,11 +60,11 @@ export const addReservation = (room, client, from_date, to_date, price) => (disp
         }
     };
 
-    const body = JSON.stringify({room, client, from_date, to_date, price});
-    axios.post('http://localhost:8000/api/reservations',body, config)
+    const body = JSON.stringify(date, price);
+    axios.post('http://localhost:8000/api/prices',body, config)
         .then(res => {
             dispatch({
-                type: ADD_RESERVATION_SUCCESS,
+                type: ADD_PRICE_SUCCESS,
                 payload: res.data
             });
         }).catch(err =>{

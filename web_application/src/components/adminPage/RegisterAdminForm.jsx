@@ -8,6 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import {registerAdmin} from "../../actions/auth";
 import Paper from "@material-ui/core/Paper/Paper";
 import Typography from "@material-ui/core/Typography/Typography";
+import store from "../../store";
+import {GET_ERRORS} from "../../actions/types";
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
     paper: {
         padding: theme.spacing(3, 1, 2, 1),
-        margin: theme.spacing(10,50,10,50),
+        margin: theme.spacing(10, 50, 10, 50),
         position: 'relative'
     },
     avatar: {
@@ -64,13 +66,24 @@ function RegisterAdminForm(props) {
         setPassword(value);
     };
     const onChangeConfirmPassword = e => {
-        const {target: {name, value}} = e;
-        setConfirmPassword(value);
-    };
+            const {target: {name, value}} = e;
+            setConfirmPassword(value);
+            if (password !== confirmPassword) {
+                const errors = {
+                    message: 'Hasła nie są identyczne',
+                    status: -1
+                };
+                store.dispatch({
+                    type: GET_ERRORS,
+                    payload: errors
+                });
+            }
+        }
+    ;
 
     return (
         <Paper className={classes.paper}>
-            <Typography variant="h3" className={classes.text}> Add new admin</Typography>
+            <Typography variant="h3" className={classes.text}>Dodaj nowego użytkownika</Typography>
             <form className={classes.form}>
                 <TextField
                     variant="outlined"
@@ -78,7 +91,7 @@ function RegisterAdminForm(props) {
                     required
                     fullWidth
                     id="username"
-                    label="Username"
+                    label="Nazwa użytkownika"
                     defaultValue={username}
                     autoFocus
                     onChange={onChangeUsername}
@@ -100,7 +113,7 @@ function RegisterAdminForm(props) {
                     required
                     fullWidth
                     name="password"
-                    label="password"
+                    label="Hasło"
                     type="password"
                     defaultValue={password}
                     onChange={onChangeConfirmPassword}
@@ -111,7 +124,7 @@ function RegisterAdminForm(props) {
                     required
                     fullWidth
                     name="confirmPassword"
-                    label="confirmPassword"
+                    label="Potwierdź hasło"
                     type="password"
                     defaultValue={confirmPassword}
                     onChange={onChangePassword}
@@ -125,7 +138,7 @@ function RegisterAdminForm(props) {
                     className={classes.submit}
                     onClick={onSubmit}
                 >
-                    Add admin
+                    Dodaj administratora
                 </Button>
             </form>
         </Paper>
