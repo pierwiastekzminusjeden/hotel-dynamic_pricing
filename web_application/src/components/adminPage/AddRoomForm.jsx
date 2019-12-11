@@ -41,10 +41,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const roomTypes = [
-    {name: 'Single room', value: 'SINGLE'},
-    {name: 'Double standard room', value: 'STANDARD'},
-    // {name: 'Triple room', value: 'TRIPLE'},
-    // {name: 'Double room with kings bed', value: 'DELUX'}
+    {name: 'Pokój o statycznej cenie', value: 'STATIC'},
+    {name: 'Pokój o dynamicznej cenie', value: 'DYNAMIC'}
 ];
 
 function AddRoomForm(props) {

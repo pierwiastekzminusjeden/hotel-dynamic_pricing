@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
-    paper: {
+    root: {
         padding: theme.spacing(10,20,10,20),
         background: '#F5F6F6',
         position: 'absolute',
@@ -25,8 +25,7 @@ function Home(props) {
     const classes = useStyles();
 
     return (
-
-        <Paper className={classes.paper}>
+        <Paper className={classes.root}>
             <RequestAvailableRoomsAndPricesForm/>
             {props.roomId && props.pricingData ? <React.Fragment> <SearchResult/> <ReservationForm/> </React.Fragment> : <React.Fragment/>}
         </Paper>

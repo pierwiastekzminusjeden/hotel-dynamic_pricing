@@ -37,14 +37,20 @@ function PricesList(props) {
                     <TableHead>
                         <TableRow>
                             <TableCell>Data</TableCell>
-                            <TableCell align="right">Cena</TableCell>
+                            <TableCell align="right">Dostępne pokoje: 100%</TableCell>
+                            <TableCell align="right">Dostępne pokoje: 75%</TableCell>
+                            <TableCell align="right">Dostępne pokoje: 50%</TableCell>
+                            <TableCell align="right">Dostępne pokoje: 25%</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.prices.map(price => (
                             <TableRow key={price.name}>
                                 <TableCell component="th" scope="row">{price.date}</TableCell>
-                                <TableCell align="right">{price.price}</TableCell>
+                                <TableCell align="right">{price.price_1_0}</TableCell>
+                                <TableCell align="right">{price.price_0_75}</TableCell>
+                                <TableCell align="right">{price.price_0_5}</TableCell>
+                                <TableCell align="right">{price.price_0_25}</TableCell>
                                 <TableCell align="right"><Button onClick ={props.deletePrice.bind(this, price.date)}>Delete</Button></TableCell>
                             </TableRow>
                         ))}
@@ -58,7 +64,7 @@ function PricesList(props) {
 
 PricesList.propTypes = {
     auth: PropTypes.object.isRequired,
-    rooms: PropTypes.array.isRequired,
+    prices: PropTypes.array.isRequired,
     getPrices: PropTypes.func.isRequired,
     deletePrice: PropTypes.func.isRequired
 };

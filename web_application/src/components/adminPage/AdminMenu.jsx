@@ -26,6 +26,7 @@ export default function AdminMenu(props) {
     const roomsLink = props => <Link to="/rooms" {...props} />;
     const reservationsLink = props => <Link to="/reservations" {...props} />;
     const pricesLink = props => <Link to="/prices" {...props} />;
+    const optimizationLink = props => <Link to="/optimization" {...props} />;
 
     return (
         <Card className={classes.card}>
@@ -46,6 +47,10 @@ export default function AdminMenu(props) {
             <ListItem button key={'Wyceny'} component={pricesLink}>
                 <ListItemIcon><HotelIcon/></ListItemIcon>
                 <ListItemText primary={'Wyceny'}/>
+            </ListItem>
+            <ListItem button key={'Moduł optymalizacji cen'} component={optimizationLink}>
+                <ListItemIcon><HotelIcon/></ListItemIcon>
+                <ListItemText primary={'Moduł optymalizacji cen'}/>
             </ListItem>
             {/*<ListItem button key={'Optymalizator cenowy'} component={}>*/}
                 {/*<ListItemIcon><HotelIcon/></ListItemIcon>*/}

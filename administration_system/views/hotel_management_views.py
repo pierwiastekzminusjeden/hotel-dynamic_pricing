@@ -1,29 +1,25 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, ListAPIView
-from rest_framework.response import Response
-from django.core.files.storage import FileSystemStorage
-
 import datetime
 
-from administration_system.business_logic.dynamic_pricing import DynamicPricing
+from django.http import JsonResponse
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, ListAPIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from administration_system.dynamic_pricing_module.dynamic_pricing_optimizer import DynamicPricingOptimizer
+from ..dynamic_pricing_module.demand_generator import DemandGenerator
+from ..dynamic_pricing_module.demand_web_scrapper import HotelPricesCollector
 from ..models import Room, Reservation, PriceReservationDate
+from ..serializers.dynamic_pricing_serializers import PricingSerializer
 from ..serializers.hotel_management_serializers import ReservationSerializer, AvailableRoomWithPriceSerializer, \
     RoomSerializer, OptimizeFromAdminPanelSerializer
-from ..serializers.dynamic_pricing_serializers import PricingSerializer
 
-#Hotel system
+import threading
+
+# Hotel system
 class RoomView(ListCreateAPIView):
     # permission_classes = [IsAuthenticated, ]  #it works
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-
-    @staticmethod
-    def filter_reservations(room_type, date_in, date_to):
-        valid_rooms = Room.objects.filter(room_type__contains=room_type)
-        reserved_rooms_id = Reservation.objects.filter(room__in=valid_rooms).filter(to_date__gt=date_in).filter(
-            from_date__lte=date_to).values('room')
-        reserved_rooms = Room.objects.filter(room_id__in=reserved_rooms_id)
-        free_rooms = valid_rooms.difference(reserved_rooms).distinct()
-        return free_rooms
 
 
 class RoomDetail(RetrieveUpdateDestroyAPIView):
@@ -67,61 +63,108 @@ class AvailableRoomWithPriceView(GenericAPIView):
         room_type = data.get("room_type")
         from_date = data.get("from_date")
         to_date = data.get("to_date")
-        if room_type:
-            available_rooms = RoomView.filter_reservations(room_type, from_date, to_date)
+        try:
+            available_rooms = self.filter_reservations(room_type, from_date, to_date)
             prices_for_room = self.create_pricing_object(available_rooms[0], from_date, to_date)
 
             return Response({
                 "room": RoomSerializer(available_rooms[0], context=self.get_serializer_context()).data,
                 "price": prices_for_room
             })
-
+        except:
+            pass
         return JsonResponse({'message': 'Brak dostępnych pokoi tego typu'}, status=204)
 
-    @staticmethod
-    def create_pricing_object(room, date_in, date_to):
+    def filter_reservations(self, room_type, date_in, date_to):
+        valid_rooms = Room.objects.filter(room_type__contains=room_type)
+        reserved_rooms_id = Reservation.objects.filter(room__in=valid_rooms).filter(to_date__gt=date_in).filter(
+            from_date__lte=date_to).values('room')
+        reserved_rooms = Room.objects.filter(room_id__in=reserved_rooms_id)
+        free_rooms = valid_rooms.difference(reserved_rooms).distinct()
+        return free_rooms
+
+    def create_pricing_object(self, room, date_in, date_to):
         current_date = date_in
         end_date = date_to
         prices = []
         while current_date <= end_date:
-            prices.append({'date': current_date, 'price': AvailableRoomWithPriceView.get_optimal_price(room, current_date)})
+            prices.append(
+                {'date': current_date, 'price': self.get_optimal_price(room, current_date)})
             current_date += datetime.timedelta(days=1)
         return prices
 
-    @staticmethod
-    def get_optimal_price(room, date):
-        free_rooms = RoomView.filter_reservations(room.room_type, date, date + datetime.timedelta(days=1)).count()
-        ratio = free_rooms/Room.objects.all().count()
+    def get_optimal_price(self, room, date):
+        free_rooms = self.filter_reservations(room.room_type, date, date + datetime.timedelta(days=1)).count()
+        ratio = free_rooms / Room.objects.all().count()
         print(free_rooms)
         price = room.base_price
-
-        obj = PriceReservationDate.objects.get(date=date)
-
-        if 0 < ratio <= 0.25 and obj:
-            price = obj.price_0_25
-        elif 0.25 < ratio <= 0.5 and obj:
-            price = obj.price_0_5
-        elif 0.5 < ratio <= 0.75 and obj:
-            price = obj.price_0_75
-        elif 0.75 < ratio <= 1 and obj:
-            price = obj.price_1_0
-
+        try:
+            obj = PriceReservationDate.objects.get(date=date)
+            print(obj)
+            if 0 < ratio <= 0.25:
+                price = obj.price_0_25
+            elif 0.25 < ratio <= 0.5:
+                price = obj.price_0_5
+            elif 0.5 < ratio <= 0.75:
+                price = obj.price_0_75
+            elif 0.75 < ratio <= 1:
+                price = obj.price_1_0
+        except:
+            pass
         return price
+
 
 class OptimizeView(GenericAPIView):
     # permission_classes = [IsAuthenticated, ]  #it works
     serializer_class = OptimizeFromAdminPanelSerializer
 
     def post(self, request, *args, **kwargs):
-        run_optimize = request.data.get("optimize")
-        demand_file = request.FILES["demand_file"]
-        fs = FileSystemStorage()
-        fs.save(demand_file.name, demand_file)
-        if run_optimize:
-            pricing = DynamicPricing()
-            pricing.import_demand_from_file('input_data', demand_file.name)
-            pricing.optimize()
-            pricing.save_optimize_to_df()
-            pricing.export_optimization_result_to_csv('output_data')
+        from_date = request.data.get("from_date")
+        to_date = request.data.get("to_date")
+        room_type = request.data.get("room_type")
+        export_concurency_prices_result_to_csv = request.data.get("concurrency_to_csv")
+        export_generated_demand_to_csv = request.data.get("demand_to_csv")
+        export_optimization_result_to_csv = request.data.get("optimize_to_csv")
+        optimize_to_db = request.data.get("optimize_to_db")
+        thread1 = threading.Thread(target=self.run, args=(from_date, to_date, room_type, optimize_to_db, export_concurency_prices_result_to_csv, export_generated_demand_to_csv, export_optimization_result_to_csv))
+        thread1.start()
+        return Response({'message': 'Przetważanie danych'}, status=status.HTTP_202_ACCEPTED)
+
+
+    def run_web_scrapper(self, from_date, to_date, room_type='STANDARD', save_data_to_file=True,
+                         output_file_name='ceny_konkurencji'):
+        webscrapper = HotelPricesCollector()
+        data_frame = webscrapper.collect_data_in_range(from_date, to_date, room_type)
+        if save_data_to_file:
+            webscrapper.export_data_to_csv(output_file_name)
+        return data_frame
+
+
+    def run_demand_generator(self, prices_data, max_demand_value=20, save_data_to_file=True,
+                             output_file_name='popyt'):
+        demand_generator = DemandGenerator()
+        demand_generator.concurency_prices = prices_data
+        demand = demand_generator.demand_generator_from_concurency_prices(max_demand_value)
+        if save_data_to_file:
+            demand_generator.export_data_to_csv(output_file_name)
+        return demand
+
+
+    def run_optimize(self, demand, save_data_to_db=False, save_data_to_file=True, output_file_name='wycena_pokoi'):
+        pricing = DynamicPricingOptimizer()
+        pricing.df_demand = demand
+        pricing.optimize()
+        optimization_result = pricing.save_optimize_to_df()
+        if save_data_to_file:
+            pricing.export_optimization_result_to_csv(output_file_name)
+        if save_data_to_db:
             pricing.save_to_database()
-        return JsonResponse({'message': 'Przetważanie danych'}, status=202)
+
+        return optimization_result
+
+    def run(self, from_date, to_date, room_type, save_optimization_res_to_db=False, export_concurency_prices_result_to_csv = True, export_generated_demand_to_csv = True, export_optimization_result_to_csv = True):
+        scrapped_data = self.run_web_scrapper(from_date, to_date, room_type)
+        demand = self.run_demand_generator(scrapped_data)
+        optimization_result = self.run_optimize(demand, save_optimization_res_to_db)
+        print(optimization_result)
+        return Response({optimization_result.to_html})

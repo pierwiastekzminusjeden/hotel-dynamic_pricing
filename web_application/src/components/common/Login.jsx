@@ -68,7 +68,7 @@ function SignInSide(props) {
     };
 
     if (props.isAuthenticated) {
-        return <Redirect to='/adminPanel'/>;
+        return <Redirect to='/optimization'/>;
     }
     return (
         <Grid container component="main" className={classes.root}>

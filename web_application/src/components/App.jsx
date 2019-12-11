@@ -9,13 +9,14 @@ import store from "../store";
 import Login from './common/Login';
 import Home from "./reservationPage/Home";
 import Header from './common/Header';
-import AdminPanel from "./adminPage/AdminPanel";
 import ChangePasswordForm from "./common/ChangePasswordForm";
 import RegisterAdminForm from "./adminPage/RegisterAdminForm";
 import Rooms from "./adminPage/Rooms";
 import Reservations from "./adminPage/Reservations"
 import ErrorSnackbar from "./common/ErrorSnackbar";
 import Prices from "./adminPage/Prices";
+import OptimizationPanel from "./adminPage/OptimizationPanel"
+
 
 export default function App(props) {
 
@@ -32,11 +33,11 @@ export default function App(props) {
                         <Route exact path="/" component={Home}/>
                         <Route exact path="/login" component={Login}/>
                         <PrivateRoute path="/changePassword" component={ChangePasswordForm}/>
-                        <PrivateRoute path="/adminPanel" component={AdminPanel}/>
                         <PrivateRoute path="/admins" component={RegisterAdminForm}/>
                         <Route exact path="/rooms" component={Rooms}/>
                         <Route exact path="/reservations" component={Reservations}/>
                         <Route exact path="/prices" component={Prices}/>
+                        <Route exact path="/optimization" component={OptimizationPanel}/>
                     </Switch>
             </Router>
         </Provider>

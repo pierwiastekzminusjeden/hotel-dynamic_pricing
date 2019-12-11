@@ -22,5 +22,10 @@ class AvailableRoomWithPriceSerializer(serializers.Serializer):
 
 
 class OptimizeFromAdminPanelSerializer(serializers.Serializer):
-    optimize = serializers.BooleanField(required=True)
-    demand_file = serializers.FileField(required=False)
+    from_date = serializers.DateField(required=True)
+    to_date = serializers.DateField(required=False)
+    room_type = serializers.ChoiceField(required=True, choices=ROOM_TYPES)
+    optimize_to_db = serializers.BooleanField(required = True)
+    concurrency_to_csv = serializers.BooleanField(required = True)
+    demand_to_csv = serializers.BooleanField(required = True)
+    optimize_to_csv = serializers.BooleanField(required = True)

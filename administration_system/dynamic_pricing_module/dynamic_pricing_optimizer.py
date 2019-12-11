@@ -1,10 +1,13 @@
-import scipy.optimize as optimize
-import pandas as pd
-import numpy as np
 import datetime
+
+import numpy as np
+import pandas as pd
+import scipy.optimize as optimize
+
 from ..models import PriceReservationDate
 
-class DynamicPricing:
+
+class DynamicPricingOptimizer:
 
     def __init__(self, elasticity=-2.0, base_price=100.0, capacities_bucket=[5.0, 10.0, 15.0, 20.0]):
         self.capacities_bucket = capacities_bucket
@@ -53,18 +56,19 @@ class DynamicPricing:
         for capacity in optimization_result.keys():
             self.df_optimization_result = pd.concat([self.df_optimization_result,
                                                      pd.DataFrame(optimization_result[capacity]['x'],
-                                                                  columns=['{}'.format(capacity/self.capacities_bucket[-1])], index=time_array)],
+                                                                  columns=['{}'.format(
+                                                                      capacity / self.capacities_bucket[-1])],
+                                                                  index=time_array)],
                                                     axis=1)
-        self.df_optimization_result.index = self.df_demand['date'].values
+        self.df_optimization_result.index = self.df_demand.index
         self.df_optimization_result.index.name = 'date'
         return self.df_optimization_result
 
-    def export_optimization_result_to_csv(self, dir_name):
+    def export_optimization_result_to_csv(self, csv_file_name, dir_name='output_data'):
         if self.df_optimization_result is None:
-            raise Exception('Brak wyników optymalizacji')
+            raise Exception('Brak wyników optymalizacji w formacie dataFrame')
         self.df_optimization_result.to_csv(
-            '{}/wyniki_optymalizacji_{}.csv'.format(dir_name, str(datetime.datetime.now().date())), sep='|')
-
+            '{0}/{1}_{2}.csv'.format(dir_name, csv_file_name, str(datetime.datetime.now().date())), sep='|')
 
     def save_to_database(self):
         if self.df_optimization_result is None:
@@ -78,5 +82,6 @@ class DynamicPricing:
                 obj.price_0_25 = row['0.25']
                 obj.save(update_fields=['price_1_0', 'price_0_75', 'price_0_5', 'price_0_25'])
             else:
-                obj = PriceReservationDate(date=pd.to_datetime(index).date(), price_1_0 = row['1.0'], price_0_75 = row['0.75'], price_0_5 = row['0.5'], price_0_25 = row['0.25'])
+                obj = PriceReservationDate(date=pd.to_datetime(index).date(), price_1_0=row['1.0'],
+                                           price_0_75=row['0.75'], price_0_5=row['0.5'], price_0_25=row['0.25'])
                 obj.save()

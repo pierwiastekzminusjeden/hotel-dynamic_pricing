@@ -12,7 +12,7 @@ export const requestAvailableRooms = (room_type, from_date, to_date) => (dispatc
             'Content-Type': 'application/json'
         }
     };
-    // date_from = date_from.format()
+
     const body = JSON.stringify({room_type, from_date, to_date});
     axios.post('http://localhost:8000/api/available-room/', body, config)
         .then(res => {

@@ -1,15 +1,14 @@
-from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
-from rest_framework import permissions, generics, status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
-from django.contrib.admin.views.decorators import staff_member_required
 from knox.models import AuthToken
+from rest_framework import permissions, generics, status
+from rest_framework.generics import GenericAPIView, RetrieveAPIView, RetrieveUpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from ..serializers.authorization_serializers import UserSerializer, LoginUserSerializer, RegistrationAdminSerializer, \
     RegistrationUserSerializer, ChangePasswordSerializer
-
 
 
 class UserView(RetrieveAPIView):

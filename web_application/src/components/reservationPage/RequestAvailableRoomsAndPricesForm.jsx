@@ -22,8 +22,8 @@ import store from "../../store";
 
 
 const roomTypes = [
-    {name: 'Pokój jednoosobowy', value: 'SINGLE'},
-    {name: 'Pokój dwuosobowy', value: 'STANDARD'}
+    {name: 'Pokój o stałej cena', value: 'STATIC'},
+    {name: 'Pokój dynamicznie wyceniany', value: 'DYNAMIC'}
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
     keyboardPicker: {
         background: '#F5F6F6',
     },
+
     provider: {
         paddingTop: '10%'
     }
@@ -81,6 +82,7 @@ function RequestAvailableRoomsAndPricesForm(props) {
     const onChangeRoomType = e => {
         setSelectedRoomType(e.target.value);
     };
+
     const handleSubmit = e => {
         if(selectedInDate > selectedOutDate) {
             const errors = {

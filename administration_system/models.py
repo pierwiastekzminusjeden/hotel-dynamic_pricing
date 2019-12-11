@@ -5,14 +5,14 @@ from django.db import models, transaction
 # import json
 
 ROOM_TYPES = (
-    ('SINGLE', 'Single room'),
-    ('STANDARD', 'Double standard room')
+    ('STATIC', 'Pokój o statyczna cena'),
+    ('DYNAMIC', 'Pokój o dynamiczna cena')
 )
 
 class Room(models.Model):
     room_id     = models.AutoField(primary_key=True)
     room_number = models.IntegerField(default=1)
-    room_type   = models.CharField(max_length=8, choices=ROOM_TYPES, default='STANDARD')
+    room_type   = models.CharField(max_length=8, choices=ROOM_TYPES, default='STATIC')
     base_price  = models.IntegerField(default=100)
 
 

@@ -25,13 +25,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '5px'
     },
     root: {
-        // display: 'flex',
-        // flexWrap: 'wrap',
-        // justifyContent: 'space-around',
-        // overflow: 'hidden',
-        // position: 'relative',
         marginTop: '40px',
-        // backgroundColor: theme.palette.background.paper,
     },
 }));
 
@@ -51,7 +45,7 @@ function ReservationForm(props) {
     };
 
     return (
-        <Paper className={classes.root}>
+        <Paper>
             <Card>
                 <CardContent>
                     <Box display="flex" flexDirection="row" p={1} m={1}>
