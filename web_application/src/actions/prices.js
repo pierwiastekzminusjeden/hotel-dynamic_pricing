@@ -52,13 +52,14 @@ export const deletePrice = (id) => (dispatch, getState) => {
         })
     })};
 
-export const addPrice = (date, price) => (dispatch) => {
-
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+export const addPrice = (date, price) => (dispatch, getState) => {
+    const config = getHeader(getState);
+    //
+    // const config = {
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // };
 
     const body = JSON.stringify(date, price);
     axios.post('http://localhost:8000/api/prices',body, config)

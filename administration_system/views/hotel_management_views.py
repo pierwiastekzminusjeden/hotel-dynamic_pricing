@@ -119,22 +119,25 @@ class OptimizeView(GenericAPIView):
     serializer_class = OptimizeFromAdminPanelSerializer
 
     def post(self, request, *args, **kwargs):
-        from_date = request.data.get("from_date")
-        to_date = request.data.get("to_date")
-        room_type = request.data.get("room_type")
-        export_concurency_prices_result_to_csv = request.data.get("concurrency_to_csv")
-        export_generated_demand_to_csv = request.data.get("demand_to_csv")
-        export_optimization_result_to_csv = request.data.get("optimize_to_csv")
-        optimize_to_db = request.data.get("optimize_to_db")
-        thread1 = threading.Thread(target=self.run, args=(from_date, to_date, room_type, optimize_to_db, export_concurency_prices_result_to_csv, export_generated_demand_to_csv, export_optimization_result_to_csv))
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        from_date = data.get("from_date")
+        to_date = data.get("to_date")
+        number_of_guests = data.get("number_of_guests")
+        # export_concurency_prices_result_to_csv = request.data.get("concurrency_to_csv")
+        # export_generated_demand_to_csv = request.data.get("demand_to_csv")
+        # export_optimization_result_to_csv = request.data.get("optimize_to_csv")
+        # optimize_to_db = request.data.get("optimize_to_db")
+        thread1 = threading.Thread(target=self.run, args=(from_date, to_date, number_of_guests))
         thread1.start()
         return Response({'message': 'Przetważanie danych'}, status=status.HTTP_202_ACCEPTED)
 
 
-    def run_web_scrapper(self, from_date, to_date, room_type='STANDARD', save_data_to_file=True,
+    def run_web_scrapper(self, from_date, to_date, number_of_guests=2, save_data_to_file=True,
                          output_file_name='ceny_konkurencji'):
         webscrapper = HotelPricesCollector()
-        data_frame = webscrapper.collect_data_in_range(from_date, to_date, room_type)
+        data_frame = webscrapper.collect_data_in_range(from_date, to_date, number_of_guests)
         if save_data_to_file:
             webscrapper.export_data_to_csv(output_file_name)
         return data_frame
@@ -162,7 +165,7 @@ class OptimizeView(GenericAPIView):
 
         return optimization_result
 
-    def run(self, from_date, to_date, room_type, save_optimization_res_to_db=False, export_concurency_prices_result_to_csv = True, export_generated_demand_to_csv = True, export_optimization_result_to_csv = True):
+    def run(self, from_date, to_date, room_type, save_optimization_res_to_db=False):
         scrapped_data = self.run_web_scrapper(from_date, to_date, room_type)
         demand = self.run_demand_generator(scrapped_data)
         optimization_result = self.run_optimize(demand, save_optimization_res_to_db)

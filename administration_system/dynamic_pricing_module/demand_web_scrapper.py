@@ -14,19 +14,8 @@ class HotelPricesCollector:
         self.all_data = {}
         self.all_data_df = None
 
-    def define_room(self, room_type):
-        adults = 2
+    def prepare_request(self, date_in, date_out, num_of_adult_guests):
         rooms = 1
-        if room_type == 'STANDARD':
-            adults = 2
-            rooms = 1
-        elif room_type == 'SINGLE':
-            adults = 1
-            rooms = 1
-        return (adults, rooms)
-
-    def prepare_request(self, date_in, date_out, room_type):
-        adults, rooms = self.define_room(room_type)
 
         basic_url = "https://www.booking.com/searchresults.pl.html?aid=304142&label=gen173nr-1DCAEoggI46AdIM1gEaLYBiAEBmAEeuAEXyAEM2AED6AEBiAIBqAIDuALn9o_vBcACAQ&tmpl=searchresults"
         checkin_year = "&checkin_year=" + str(date_in.year)
@@ -36,7 +25,7 @@ class HotelPricesCollector:
         checkout_month = "&checkout_month=" + str(date_out.month)
         checkout_monthday = "&checkout_monthday=" + str(date_out.day)
         tmp = "&city=-510625&class_interval=1&dest_id=-510625&dest_type=city&from_sf=1"
-        group_adults = "&group_adults=" + str(adults)
+        group_adults = "&group_adults=" + str(num_of_adult_guests)
         group_children = "&group_children=" + str(0)
         selected_currency = "&selected_currency=" + 'PLN'
         no_rooms = "&no_rooms=" + str(rooms)

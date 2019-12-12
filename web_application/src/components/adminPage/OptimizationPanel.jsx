@@ -21,10 +21,13 @@ import {GET_ERRORS} from "../../actions/types";
 import store from "../../store";
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import {runOptimize} from "../../actions/optimize";
 
 const roomTypes = [
-    {name: 'Pokój jednoosobowy', value: 'SINGLE'},
-    {name: 'Pokój dwuosobowy', value: 'STANDARD'}
+    {name: 'Jedna osoba', value: 1},
+    {name: 'Dwie osoby', value: 2},
+    {name: 'Trzy osoby', value: 3},
+    {name: 'Cztery osoby', value: 4}
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -101,7 +104,7 @@ function OptimizationPanel(props) {
             setSelectedOutDate(format(Date.now(), 'yyyy-MM-dd'));
         } else {
             e.preventDefault();
-            props.requestAvailableRooms(selectedRoomType, selectedInDate, selectedOutDate);
+            props.runOptimize(selectedInDate, selectedOutDate, selectedRoomType, saveToDb);
         }
     };
 
@@ -145,7 +148,7 @@ function OptimizationPanel(props) {
                                     </Box>
                                     <Box p={5} display="flex" flexDirection="column">
                                         <Box p={5}>
-                                            <Typography variant="h6">Typ pokoju</Typography>
+                                            <Typography variant="h6">Przeszukaj dla: </Typography>
                                             <FormControl className={classes.formControl}>
                                                 <Select
                                                     label="room type"
@@ -176,11 +179,11 @@ function OptimizationPanel(props) {
                                             />
                                         </Box>
                                         <Box p={5}>
-                                            {/*<Button*/}
-                                            {/*    type="submit"*/}
-                                            {/*    disabled={disabled}*/}
-                                            {/*    className={classes.button}>Zapytaj o dostępne pokoje*/}
-                                            {/*</Button>*/}
+                                            <Button
+                                                type="submit"
+                                                disabled={disabled}
+                                                className={classes.button}>Optymalizuj na podstawie cen konkurencji
+                                            </Button>
                                         </Box>
                                     </Box>
                                 </Box>
@@ -206,11 +209,13 @@ function OptimizationPanel(props) {
 }
 
 OptimizationPanel.propTypes = {
+    runOptimize: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
 
 };
 
 const mapStateToProps = state => ({
-
+    auth: state.auth
 });
 
-export default connect(mapStateToProps, {})(OptimizationPanel);
+export default connect(mapStateToProps, {runOptimize})(OptimizationPanel);

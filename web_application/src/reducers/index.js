@@ -5,6 +5,7 @@ import reservations from './reservations';
 import errors from './errors';
 import {combineReducers} from "redux";
 import prices from "./prices";
+import optimize from "./optimize";
 
 export default combineReducers({
     auth,
@@ -12,5 +13,6 @@ export default combineReducers({
     availableRooms,
     reservations,
     prices,
+    optimize,
     errors
 });
