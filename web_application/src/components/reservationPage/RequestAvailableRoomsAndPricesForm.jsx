@@ -28,6 +28,10 @@ const roomTypes = [
 
 const useStyles = makeStyles(theme => ({
 
+    root: {
+        margin: theme.spacing(10,20,1,20),
+    },
+
     card: {
         display: 'flex',
         alignItems: 'center'
@@ -103,7 +107,7 @@ function RequestAvailableRoomsAndPricesForm(props) {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Paper>
+            <Paper className={classes.root}>
                 <Card className={classes.card}>
                     <CardContent>
                         <form onSubmit={handleSubmit}>

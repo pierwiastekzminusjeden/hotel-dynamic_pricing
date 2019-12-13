@@ -12,30 +12,20 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Card from "@material-ui/core/Card";
 
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         height: '100%',
-        marginTop: '70px',
-        marginBottom: '70px'
-    },
-    image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        padding: theme.spacing(10, 5, 10, 5),
+        margin: theme.spacing(10,70,10,70),
+        position: 'relative'
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: 'purple',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -43,6 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
+        background: theme.palette.primary
     },
 }));
 
@@ -71,9 +62,7 @@ function SignInSide(props) {
         return <Redirect to='/optimization'/>;
     }
     return (
-        <Grid container component="main" className={classes.root}>
-            <Grid item component={Paper} square>
-                <div className={classes.paper}>
+            <Paper className={classes.root}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon/>
                     </Avatar>
@@ -111,13 +100,10 @@ function SignInSide(props) {
                             className={classes.submit}
                             onClick={onSubmit}
                         >
-                            Log In
+                            Zaloguj
                         </Button>
                     </form>
-                </div>
-            </Grid>
-            <Grid item sm={5} md={5} className={classes.image}/>
-        </Grid>
+            </Paper>
     );
 }
 

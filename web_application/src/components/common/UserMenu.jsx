@@ -45,7 +45,6 @@ function UserMenu(props) {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
-
         setOpen(false);
     };
 
@@ -56,7 +55,6 @@ function UserMenu(props) {
         }
     }
 
-    // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
     React.useEffect(() => {
         if (prevOpen.current === true && open === false) {
@@ -67,12 +65,12 @@ function UserMenu(props) {
     }, [open]);
     const logoutLink = props.logout;
     const changePassword = props => <Link to="/changePassword" {...props} />;
-    const adminPanel = props => <Link to="/adminPanel" {...props} />;
+    const adminPanel = props => <Link to="/optimization" {...props} />;
     const {isAuthenticated, user} = props.auth;
 
     return (
         <div className={classes.root}>
-            <Typography className={classes.text}> Logged as {user.username}</Typography>
+            <Typography className={classes.text}> Zalogowano jako: {user.username}</Typography>
             <IconButton
                 ref={anchorRef}
                 color="inherit"
@@ -91,9 +89,9 @@ function UserMenu(props) {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                    <MenuItem component={changePassword}>Change Password</MenuItem>
-                                    <MenuItem component={adminPanel}>Admin Panel</MenuItem>
-                                    <MenuItem onClick={logoutLink}>Logout</MenuItem>
+                                    <MenuItem component={changePassword}>Zmień hasło</MenuItem>
+                                    <MenuItem component={adminPanel}>Panel administracyjny</MenuItem>
+                                    <MenuItem onClick={logoutLink}>Wyloguj</MenuItem>
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>

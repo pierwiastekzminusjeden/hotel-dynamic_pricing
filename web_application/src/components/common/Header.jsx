@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
         display: 'none',
     },
     appBar: {
-        background: '#F5F6F6',
+        background: 'purple',
         margin: '0px',
         borderBottom: 'groove',
         borderColor: 'black',
@@ -45,6 +45,11 @@ const useStyles = makeStyles(theme => ({
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        background: 'purple',
+        borderBottom: 'groove',
+        borderColor: 'black',
+        borderWidth: '1px',
+        color: 'black'
     },
 }));
 
@@ -68,17 +73,15 @@ function Header(props) {
     };
 
     return (
-        <div className={classes.root}>
+        <React.Fragment>
             <AppBar
                 position="fixed"
                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: open,
                 })}>
                 <Toolbar>
-                {/* Menu rozwijane dostępne tylko gdy użytkownik jest autoryzowany*/}
                     {isAuthenticated ? <IconButton
                         edge="start"
-                        className={classes.menuButton}
                         color="inherit"
                         aria-label="menu"
                         onClick={handleDrawer}
@@ -90,13 +93,13 @@ function Header(props) {
                 </Toolbar>
             </AppBar>
             <SideMenue open={open}/>
-        </div>
+        </React.Fragment>
     );
 }
 
 Header.propTypes = {
     auth: PropTypes.object.isRequired,
-}
+};
 
 const mapStateToProps = state => ({
     auth: state.auth

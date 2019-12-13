@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-
 import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,13 +8,12 @@ import Paper from "@material-ui/core/Paper/Paper";
 import Typography from "@material-ui/core/Typography/Typography";
 import {addReservation} from "../../actions/reservations";
 
-
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         height: '100%',
-        marginTop: '70px',
-        marginBottom: '70px'
+        padding: theme.spacing(2, 1, 2, 1),
+        margin: theme.spacing(10,20,10,20),
     },
 
     paper: {

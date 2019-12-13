@@ -12,16 +12,19 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from "@material-ui/core/Button/Button";
 import {deletePrice, getPrices} from "../../actions/prices";
+import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme =>({
     root: {
-        width: '100%',
-        overflowX: 'auto',
+
+        padding: theme.spacing(2, 1, 2, 1),
+        margin: theme.spacing(10,20,10,20),
     },
     table: {
+        margin: theme.spacing(10,1,10,1),
         minWidth: 650,
     },
-});
+}));
 
 function PricesList(props) {
     const classes = useStyles();
@@ -31,8 +34,8 @@ function PricesList(props) {
 
     return(
         <React.Fragment>
-            <h2>Ceny</h2>
             <Paper className={classes.root}>
+                <Typography variant="h3">Wyceny pokoi w zależności od daty oraz dostępności</Typography>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -51,7 +54,7 @@ function PricesList(props) {
                                 <TableCell align="right">{price.price_0_75}</TableCell>
                                 <TableCell align="right">{price.price_0_5}</TableCell>
                                 <TableCell align="right">{price.price_0_25}</TableCell>
-                                <TableCell align="right"><Button onClick ={props.deletePrice.bind(this, price.date)}>Delete</Button></TableCell>
+                                <TableCell align="right"><Button disabled={true} onClick ={props.deletePrice.bind(this, price.date)}>Delete</Button></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

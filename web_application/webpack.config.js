@@ -38,7 +38,7 @@ module.exports = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new HtmlWebpackPlugin({
-			title: "React - webpack - babel template",
+			title: "Aplikacja hotelowa z modułem dynamicznej wyceny",
 		  	template: './templates/index.html',
 		})
 	  ],

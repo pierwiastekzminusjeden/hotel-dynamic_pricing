@@ -3,15 +3,12 @@ import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import CardContent from "@material-ui/core/CardContent";
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
-import {requestAvailableRooms} from "../../actions/availableRooms";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import DateFnsUtils from "@date-io/date-fns";
@@ -31,6 +28,11 @@ const roomTypes = [
 ];
 
 const useStyles = makeStyles(theme => ({
+
+    root: {
+        padding: theme.spacing(2, 1, 2, 1),
+        margin: theme.spacing(10,20,10,20),
+    },
 
     card: {
         display: 'flex',
@@ -109,12 +111,9 @@ function OptimizationPanel(props) {
     };
 
     return (
-        <Paper>
+        <Paper className={classes.root}>
             <form onSubmit={handleSubmit}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Paper>
-                        <Card className={classes.card}>
-                            <CardContent>
                                 <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
                                     <Box p={5}>
                                         <Typography variant="h6">Data początkowa</Typography>
@@ -187,22 +186,7 @@ function OptimizationPanel(props) {
                                         </Box>
                                     </Box>
                                 </Box>
-                            </CardContent>
-                        </Card>
-                    </Paper>
                 </MuiPickersUtilsProvider>
-                <Paper>
-                    <Card className={classes.card}>
-                        <CardContent>
-                            <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-                                <Box p={5}>
-
-                                </Box>
-                            </Box>
-                        </CardContent>
-
-                    </Card>
-                </Paper>
             </form>
         </Paper>
     );

@@ -8,13 +8,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 export const runOptimize = (from_date, to_date, number_of_guests, optimize_to_db) => (dispatch, getState) => {
     const config = getHeader(getState);
 
-    // const config = {
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // };
-
-    const body = JSON.stringify({from_date, to_date, number_of_guests});
+    const body = JSON.stringify({from_date, to_date, number_of_guests, optimize_to_db});
     console.log(body);
     axios.post('http://localhost:8000/api/optimize/',body, config)
         .then(res => {

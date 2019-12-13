@@ -9,9 +9,8 @@ from administration_system.dynamic_pricing_module.dynamic_pricing_optimizer impo
 from ..dynamic_pricing_module.demand_generator import DemandGenerator
 from ..dynamic_pricing_module.demand_web_scrapper import HotelPricesCollector
 from ..models import Room, Reservation, PriceReservationDate
-from ..serializers.dynamic_pricing_serializers import PricingSerializer
 from ..serializers.hotel_management_serializers import ReservationSerializer, AvailableRoomWithPriceSerializer, \
-    RoomSerializer, OptimizeFromAdminPanelSerializer
+    RoomSerializer, OptimizeFromAdminPanelSerializer, PricingSerializer
 
 import threading
 
@@ -72,14 +71,14 @@ class AvailableRoomWithPriceView(GenericAPIView):
                 "price": prices_for_room
             })
         except:
-            pass
-        return JsonResponse({'message': 'Brak dostępnych pokoi tego typu'}, status=204)
+            print('exception')
+        return Response({'message': 'Brak dostępnych pokoi tego typu'}, status=202)
 
     def filter_reservations(self, room_type, date_in, date_to):
         valid_rooms = Room.objects.filter(room_type__contains=room_type)
         reserved_rooms_id = Reservation.objects.filter(room__in=valid_rooms).filter(to_date__gt=date_in).filter(
             from_date__lte=date_to).values('room')
-        reserved_rooms = Room.objects.filter(room_id__in=reserved_rooms_id)
+        reserved_rooms = Room.objects.filter(room_number__in =reserved_rooms_id)
         free_rooms = valid_rooms.difference(reserved_rooms).distinct()
         return free_rooms
 
@@ -115,7 +114,6 @@ class AvailableRoomWithPriceView(GenericAPIView):
 
 
 class OptimizeView(GenericAPIView):
-    # permission_classes = [IsAuthenticated, ]  #it works
     serializer_class = OptimizeFromAdminPanelSerializer
 
     def post(self, request, *args, **kwargs):
@@ -125,11 +123,9 @@ class OptimizeView(GenericAPIView):
         from_date = data.get("from_date")
         to_date = data.get("to_date")
         number_of_guests = data.get("number_of_guests")
-        # export_concurency_prices_result_to_csv = request.data.get("concurrency_to_csv")
-        # export_generated_demand_to_csv = request.data.get("demand_to_csv")
-        # export_optimization_result_to_csv = request.data.get("optimize_to_csv")
-        # optimize_to_db = request.data.get("optimize_to_db")
-        thread1 = threading.Thread(target=self.run, args=(from_date, to_date, number_of_guests))
+        optimize_to_db = data.get("optimize_to_db")
+
+        thread1 = threading.Thread(target=self.run, args=(from_date, to_date, number_of_guests, optimize_to_db))
         thread1.start()
         return Response({'message': 'Przetważanie danych'}, status=status.HTTP_202_ACCEPTED)
 
@@ -169,5 +165,4 @@ class OptimizeView(GenericAPIView):
         scrapped_data = self.run_web_scrapper(from_date, to_date, room_type)
         demand = self.run_demand_generator(scrapped_data)
         optimization_result = self.run_optimize(demand, save_optimization_res_to_db)
-        print(optimization_result)
-        return Response({optimization_result.to_html})
+        return optimization_result

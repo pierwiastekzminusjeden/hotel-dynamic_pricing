@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
@@ -13,10 +15,9 @@ class HotelPricesCollector:
         self.soup_html = None
         self.all_data = {}
         self.all_data_df = None
+        self.dates = []
 
-    def prepare_request(self, date_in, date_out, num_of_adult_guests):
-        rooms = 1
-
+    def prepare_request(self, date_in, date_out, num_of_adult_guests, rooms = 1):
         basic_url = "https://www.booking.com/searchresults.pl.html?aid=304142&label=gen173nr-1DCAEoggI46AdIM1gEaLYBiAEBmAEeuAEXyAEM2AED6AEBiAIBqAIDuALn9o_vBcACAQ&tmpl=searchresults"
         checkin_year = "&checkin_year=" + str(date_in.year)
         checkin_month = "&checkin_month=" + str(date_in.month)
@@ -64,28 +65,23 @@ class HotelPricesCollector:
         self.all_data_df.index.name = 'hotel'
         return self.all_data_df
 
-
     def collect_data_in_range(self, from_date, to_date, room_type):
         first_date = pd.to_datetime(from_date)
         last_date = pd.to_datetime(to_date)
-        date_range = pd.date_range(first_date, last_date - timedelta(days=1))
-
-        if first_date > last_date:
-            raise Exception('Data początkowa jest późniejsza niż końcowa')
-        if 14 > date_range.__len__() > 365:
-            raise Exception('Wprowadzony okres czasu jest za długi (powyżej 365 dni lub poniżej dwóch tygodni)')
-        if datetime.datetime.now() < first_date < datetime.datetime.now() + timedelta(days=10):
-            raise Exception('Przeszukiwanie możliwe tylko dla przyszłego okresu oddalonego o minimum 10 dni teraźniejszej daty ')
-        if last_date > datetime.datetime.now() + timedelta(days=365):
-            raise Exception('Ostatnia data przeszukiwania nie może być bardziej odległa niż o rok od aktualnej daty')
+        self.dates.append(first_date.date())
+        self.dates.append(last_date.date())
+        self.dates.append(room_type)
+        date_range = pd.date_range(first_date, last_date)
 
         for single_date in date_range:
             self.prepare_data(single_date, single_date + timedelta(days=1), room_type)
             self.all_data[str(single_date.date())] = self.extract_data_from_html()
         return self.save_data_to_df()
 
-    def export_data_to_csv(self, csv_file_name='ceny_konkurencji', dir_name='output_data'):
+    def export_data_to_csv(self, csv_file_name='ceny_konkurencji', base_dir_name='output_data_dynamic_pricing'):
         if self.all_data_df is None:
             raise Exception('Brak wyników przeszkukiwania w postaci DataFrame')
+        dir_name = Path('{0}/{1}_{2}'.format(base_dir_name, str(self.dates[0]), str(self.dates[1])))
+        dir_name.mkdir(exist_ok=True)
         self.all_data_df.to_csv(
-            '{0}/{1}_{2}.csv'.format(dir_name, csv_file_name, str(datetime.datetime.now().date())), sep='|')
+            '{0}/{1}_osobowy_{2}_{3}.csv'.format(dir_name,self.dates[2], csv_file_name, str(datetime.datetime.now().date())), sep='|')

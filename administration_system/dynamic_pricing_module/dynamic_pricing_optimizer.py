@@ -1,5 +1,7 @@
 import datetime
+from pathlib import Path
 
+import numpy
 import numpy as np
 import pandas as pd
 import scipy.optimize as optimize
@@ -64,9 +66,11 @@ class DynamicPricingOptimizer:
         self.df_optimization_result.index.name = 'date'
         return self.df_optimization_result
 
-    def export_optimization_result_to_csv(self, csv_file_name, dir_name='output_data'):
+    def export_optimization_result_to_csv(self, csv_file_name, base_dir_name='output_data_dynamic_pricing'):
         if self.df_optimization_result is None:
             raise Exception('Brak wyników optymalizacji w formacie dataFrame')
+        dir_name = Path('{0}/{1}_{2}'.format(base_dir_name, numpy.datetime_as_string(self.df_optimization_result.index.values[0], unit='D'), numpy.datetime_as_string(self.df_optimization_result.index.values[-1], unit='D')))
+        dir_name.mkdir(exist_ok=True)
         self.df_optimization_result.to_csv(
             '{0}/{1}_{2}.csv'.format(dir_name, csv_file_name, str(datetime.datetime.now().date())), sep='|')
 

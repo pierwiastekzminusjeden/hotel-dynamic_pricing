@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -20,7 +20,7 @@ function ErrorSnackbar(props) {
     useEffect(() => {
         const errorMessage = props.errorMessage;
         setError(errorMessage);
-        if(props.errorMessage !== null)
+        if (props.errorMessage !== null)
             setOpen(true);
     }, [props.serverResponseStatus, props.serverMessage, props.errorMessage]);
 
@@ -50,7 +50,7 @@ function ErrorSnackbar(props) {
                         className={classes.close}
                         onClick={handleClose}
                     >
-                        <CloseIcon />
+                        <CloseIcon/>
                     </IconButton>,
                 ]}
             />

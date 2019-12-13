@@ -16,6 +16,10 @@ import Reservations from "./adminPage/Reservations"
 import ErrorSnackbar from "./common/ErrorSnackbar";
 import Prices from "./adminPage/Prices";
 import OptimizationPanel from "./adminPage/OptimizationPanel"
+import RoomList from "./adminPage/RoomList";
+import ReservationList from "./adminPage/ReservationList";
+import ReservationForm from "./reservationPage/ReservationForm";
+import AddReservationForm from "./adminPage/AddReservationForm";
 
 
 export default function App(props) {
@@ -27,6 +31,7 @@ export default function App(props) {
     return (
         <Provider store={store}>
             <ErrorSnackbar/>
+
             <Router>
                 <Header/>
                     <Switch>
@@ -34,10 +39,10 @@ export default function App(props) {
                         <Route exact path="/login" component={Login}/>
                         <PrivateRoute path="/changePassword" component={ChangePasswordForm}/>
                         <PrivateRoute path="/admins" component={RegisterAdminForm}/>
-                        <Route exact path="/rooms" component={Rooms}/>
-                        <Route exact path="/reservations" component={Reservations}/>
-                        <Route exact path="/prices" component={Prices}/>
-                        <Route exact path="/optimization" component={OptimizationPanel}/>
+                        <PrivateRoute exact path="/rooms" component={RoomList}/>
+                        <PrivateRoute exact path="/reservations" component={AddReservationForm}/>
+                        <PrivateRoute exact path="/prices" component={Prices}/>
+                        <PrivateRoute exact path="/optimization" component={OptimizationPanel}/>
                     </Switch>
             </Router>
         </Provider>

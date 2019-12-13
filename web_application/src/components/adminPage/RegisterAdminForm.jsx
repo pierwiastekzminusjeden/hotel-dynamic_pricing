@@ -13,12 +13,6 @@ import {GET_ERRORS} from "../../actions/types";
 
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        height: '100%',
-        marginTop: '70px',
-        marginBottom: '70px'
-    },
 
     paper: {
         padding: theme.spacing(3, 1, 2, 1),

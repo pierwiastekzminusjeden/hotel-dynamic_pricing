@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
     },
     paper: {
-        background: '#F5F6F6',
         height: '100%',
         borderRight: 'groove',
         borderColor: 'black',
@@ -26,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
     drawer: {
         width: drawerWidth,
-        flexShrink: 0,
+        flexShrink: 40,
     },
 
     drawerPaper: {
@@ -86,7 +85,6 @@ function SideMenue(props) {
             >
                 <Paper className={classes.paper}>
                      { isAuthenticated ? <AdminMenu/> : <React.Fragment/> }
-                    <Route path="/home" component={ReservationForm}/>
                 </Paper>
             </Drawer>
         </React.Fragment>

@@ -9,10 +9,11 @@ import RequestAvailableRoomsAndPricesForm from "../reservationPage/RequestAvaila
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
+
 const useStyles = makeStyles(theme => ({
     root: {
         padding: theme.spacing(10,20,10,20),
-        background: '#F5F6F6',
+        background: theme.palette.primary,
         position: 'absolute',
         top: '0px',
         right: '0px',
@@ -25,10 +26,10 @@ function Home(props) {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root}>
+        <React.Fragment>
             <RequestAvailableRoomsAndPricesForm/>
             {props.roomId && props.pricingData ? <React.Fragment> <SearchResult/> <ReservationForm/> </React.Fragment> : <React.Fragment/>}
-        </Paper>
+        </React.Fragment>
     );
 }
 

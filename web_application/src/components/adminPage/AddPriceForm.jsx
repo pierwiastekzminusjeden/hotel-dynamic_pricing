@@ -14,8 +14,8 @@ const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         height: '100%',
-        marginTop: '70px',
-        marginBottom: '70px'
+        padding: theme.spacing(2, 1, 2, 1),
+        margin: theme.spacing(10,20,10,20),
     },
 
     paper: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
-        width: '100%', // Fix IE 11 issue.
+        width: '100%',
         marginTop: theme.spacing(1),
     },
     submit: {
@@ -92,7 +92,7 @@ function AddPriceForm(props) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={disabled}
+                    disabled={true}
                     className={classes.submit}
                     onClick={onSubmit}
                 >

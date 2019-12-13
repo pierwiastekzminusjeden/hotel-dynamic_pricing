@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
             case DELETE_ROOM:
             return {
                 ...state,
-                rooms: state.rooms.filter((room) => room.room_id !== action.payload)
+                rooms: state.rooms.filter((room) => room.room_number !== action.payload)
             };
         default:
             return state;

@@ -1,8 +1,4 @@
-from django.db import models, transaction
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
-# from jsonfield import JSONField
-# import json
+from django.db import models
 
 ROOM_TYPES = (
     ('STATIC', 'Pokój o statyczna cena'),
@@ -10,16 +6,15 @@ ROOM_TYPES = (
 )
 
 class Room(models.Model):
-    room_id     = models.AutoField(primary_key=True)
-    room_number = models.IntegerField(default=1)
+    room_number = models.IntegerField(default=1, primary_key=True)
     room_type   = models.CharField(max_length=8, choices=ROOM_TYPES, default='STATIC')
     base_price  = models.IntegerField(default=100)
 
 
 class Reservation(models.Model):
     reservation_id      = models.AutoField(primary_key=True)
-    room                = models.ForeignKey(Room, on_delete=models.PROTECT)
-    client              = models.EmailField(max_length=254)  # models.ForeignKey(Client, on_delete=models.CASCADE)
+    room                = models.ForeignKey(Room, on_delete= models.CASCADE)
+    client              = models.EmailField(max_length=254)
     reservation_date    = models.DateTimeField(auto_now_add=True)
     from_date           = models.DateField()
     to_date             = models.DateField()

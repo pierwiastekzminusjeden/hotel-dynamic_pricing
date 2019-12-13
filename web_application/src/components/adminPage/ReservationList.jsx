@@ -12,15 +12,17 @@ import Paper from '@material-ui/core/Paper';
 import Button from "@material-ui/core/Button/Button";
 import {deleteReservation, getReservations} from "../../actions/reservations";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme =>({
     root: {
         width: '100%',
         overflowX: 'auto',
+        padding: theme.spacing(2, 1, 2, 1),
+        margin: theme.spacing(10,20,10,20),
     },
     table: {
         minWidth: 650,
     },
-});
+}));
 
 function ReservationList(props) {
     const classes = useStyles();

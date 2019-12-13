@@ -12,7 +12,10 @@ import {makeStyles} from "@material-ui/core/styles";
 
 
 const useStyles = makeStyles(theme => ({
-
+    root: {
+        margin: theme.spacing(1, 20, 10, 20),
+        padding: theme.spacing(1,50,1,50)
+    },
     element: {
         margin: '20px',
     },
@@ -23,9 +26,6 @@ const useStyles = makeStyles(theme => ({
         border: 'dotted',
         borderWidth: '0.5px',
         borderRadius: '5px'
-    },
-    root: {
-        marginTop: '40px',
     },
 }));
 
@@ -41,36 +41,32 @@ function ReservationForm(props) {
     const onSubmit = (e) => {
         e.preventDefault();
         props.addReservation(props.roomId.room_id, clientEmail,
-            props.pricingData[0].date, props.pricingData[props.pricingData.length - 1].date, props.pricingData.map(e => e.price).reduce((a,b) => a + b, 0));
+            props.pricingData[0].date, props.pricingData[props.pricingData.length - 1].date, props.pricingData.map(e => e.price).reduce((a, b) => a + b, 0));
     };
 
     return (
-        <Paper>
-            <Card>
-                <CardContent>
-                    <Box display="flex" flexDirection="row" p={1} m={1}>
-                        <Box mr={10} ml={10}>
-                            <TextField
-                                autoFocus
-                                id="name"
-                                label="Email Address"
-                                type="email"
-                                fullWidth
-                                onChange={onChangeEmail}
-                            />
-                        </Box>
+        <Paper className={classes.root}>
+            <Box display="flex" flexDirection="row" p={1} m={1}>
+                <Box mr={10} ml={10}>
+                    <TextField
+                        autoFocus
+                        id="name"
+                        label="Email Address"
+                        type="email"
+                        fullWidth
+                        onChange={onChangeEmail}
+                    />
+                </Box>
 
-                        <Box ml={10}>
-                            <Button
-                                onClick={onSubmit}
-                                disabled = {disabled}
-                                className={classes.button}>
-                                Make reservation
-                            </Button>
-                        </Box>
-                    </Box>
-                </CardContent>
-            </Card>
+                <Box ml={10}>
+                    <Button
+                        onClick={onSubmit}
+                        disabled={disabled}
+                        className={classes.button}>
+                        Make reservation
+                    </Button>
+                </Box>
+            </Box>
         </Paper>
     );
 }

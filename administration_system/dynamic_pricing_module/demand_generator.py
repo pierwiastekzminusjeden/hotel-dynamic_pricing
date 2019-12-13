@@ -1,7 +1,9 @@
 import datetime
 
+import numpy
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
 
 class DemandGenerator:
@@ -70,8 +72,12 @@ class DemandGenerator:
         print(self.demand.head(10))
         return self.demand
 
-    def export_data_to_csv(self, csv_file_name, dir_name='output_data'):
+    def export_data_to_csv(self, csv_file_name, base_dir_name='output_data_dynamic_pricing'):
         if self.demand is None:
             raise Exception('Brak wyników formacie DataFrame')
+        dir_name = Path('{0}/{1}_{2}'.format(base_dir_name, numpy.datetime_as_string(self.demand.index.values[0], unit='D'), numpy.datetime_as_string(self.demand.index.values[-1], unit='D')))
+        dir_name.mkdir(exist_ok=True)
+
+        print(dir_name)
         self.demand.to_csv('{0}/{1}_{2}.csv'.format(dir_name, csv_file_name, str(datetime.datetime.now().date())),
                            sep='|')

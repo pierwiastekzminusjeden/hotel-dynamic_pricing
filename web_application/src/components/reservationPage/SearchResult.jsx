@@ -13,26 +13,25 @@ import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
 
+    root: {
+        margin: theme.spacing(1,20,1,20),
+        backgroundColor: theme.palette.background.paper,
+    },
+
     element: {
         margin: '20px',
     },
 
-    root: {
-        marginTop: '40px',
-
-        backgroundColor: theme.palette.background.paper,
-    },
     leftCol: {
         textAlign: 'center',
         position: 'flex',
         left: '0px',
-        widht: '70%'
     },
+
     rightCol: {
         position: 'flex',
         width: '100%'
     },
-
 }));
 
 function SearchResult(props) {

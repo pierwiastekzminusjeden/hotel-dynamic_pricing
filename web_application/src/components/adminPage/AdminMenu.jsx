@@ -52,10 +52,6 @@ export default function AdminMenu(props) {
                 <ListItemIcon><HotelIcon/></ListItemIcon>
                 <ListItemText primary={'Moduł optymalizacji cen'}/>
             </ListItem>
-            {/*<ListItem button key={'Optymalizator cenowy'} component={}>*/}
-                {/*<ListItemIcon><HotelIcon/></ListItemIcon>*/}
-                {/*<ListItemText primary={'Optymalizator cenowy'}/>*/}
-            {/*</ListItem>*/}
         </Card>
     );
 }

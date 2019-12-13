@@ -14,15 +14,15 @@ import Typography from "@material-ui/core/Typography/Typography";
 const useStyles = makeStyles(theme => ({
 
     form: {
-        width: '100%', // Fix IE 11 issue.
+        width: '100%',
         marginTop: theme.spacing(1),
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
     paper: {
-        padding: theme.spacing(3, 1, 2, 1),
-        margin: theme.spacing(10,50,10,50),
+        padding: theme.spacing(10, 5, 10, 5),
+        margin: theme.spacing(10,70,10,70),
         position: 'relative'
     },
     text: {

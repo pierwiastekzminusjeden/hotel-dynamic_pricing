@@ -3,8 +3,7 @@ import AddReservationForm from "./AddReservationForm";
 import ReservationList from "./ReservationList";
 
 
-export default function Reservations() {
-
+export default function Reservations(props) {
     return (
         <React.Fragment>
             <AddReservationForm/>

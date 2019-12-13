@@ -13,13 +13,13 @@ import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import {addRoom} from "../../actions/rooms";
 
-
 const useStyles = makeStyles(theme => ({
+
     root: {
         display: 'flex',
         height: '100%',
-        marginTop: '70px',
-        marginBottom: '70px'
+        padding: theme.spacing(2, 1, 2, 1),
+        margin: theme.spacing(10,20,10,20),
     },
 
     paper: {
@@ -48,6 +48,7 @@ const roomTypes = [
 function AddRoomForm(props) {
 
     const classes = useStyles();
+
     const [room_number, setRoom_number] = React.useState();
     const [room_type, setRoom_type] = React.useState();
     const [base_price_per_night, setBase_price_per_night] = React.useState();
@@ -74,7 +75,7 @@ function AddRoomForm(props) {
 
     return (
         <Paper className={classes.paper}>
-            <Typography variant="h3" className={classes.text}> Add new room</Typography>
+            <Typography variant="h3"> Dodaj nowy pokój</Typography>
             <form className={classes.form}>
                 <TextField
                     variant="outlined"
@@ -118,7 +119,7 @@ function AddRoomForm(props) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={disabled}
+                    disabled={true}
                     className={classes.submit}
                     onClick={onSubmit}
                 >
